@@ -95,6 +95,3 @@ function mudarLinguagem(event) {
         linguagemAtual = 'Portugol';
     }
 }
-
-// Adiciona um ouvinte de evento ao select
-document.querySelector('.form-select').addEventListener('change', mudarLinguagem);
