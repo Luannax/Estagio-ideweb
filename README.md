@@ -21,7 +21,7 @@ Os alunos contribuindo para este projeto estão fazendo isso como parte de seu e
 
 A IDE permite que os usuários escrevam, compartilhem e salvem código em Python e Portugol, e foi projetada para ser usada com o leitor de tela NVDA.
 
-<h2>Contribuindo</h3>h2>
+<h2>Contribuindo</h2>h2>
 Contribuições para este projeto são bem-vindas. Se você encontrar um bug ou tiver uma sugestão de melhoria, por favor, abra uma issue no nosso repositório do GitHub.
 
 <h2>PROJETO EM ANDAMENTO ...</h2>  
