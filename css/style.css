@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px 20px;
+}
+
+.container-btnAcessSelect{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 60rem;
+}
+
+.input-algoritmo {
+    width: 80rem;
+    height:20rem;
+    border-radius: 5px;
+    border: 2px solid #000000;
+}
+
+#terminal {
+    background-color: #f8f9fa;
+    border: none;
+    resize: none;
+    font-size: 14px;
+    padding: 10px;
+}
