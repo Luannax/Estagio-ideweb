@@ -63,7 +63,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-center mt-5 input-algoritmo">
-                        <textarea id="code" name="code" class="form-control " rows="10"></textarea>
+                        <pre id="code" name="code" class="form-control ">print("Hello world")</pre>
                     </div>
                 </div>
             </div>
@@ -288,5 +288,12 @@
     <script src="./js/script.js"></script> <!-- Link para o arquivo JavaScript que contém a lógica do programa -->
     <script src="./js/modalconfig.js"></script>
     <script src="./js/btndark-light.js"></script>
+    <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Define o pre como o editor da pagina web e altera o tema do editor -->
+    <script>
+        var editor = ace.edit("code");
+        editor.setTheme("ace/theme/dark");
+        editor.session.setMode("ace/mode/python");
+    </script>
 </body>
 </html>
