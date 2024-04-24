@@ -1,7 +1,8 @@
 // Função para salvar o código em um arquivo
 function salvarCodigo() {
-    // Obtém o código do textarea
+    // Obtém o código do pre
     var codigo = document.getElementById('code').value;
+    
 
     // Cria um novo Blob com o código
     var blob = new Blob([codigo], {type: "text/plain;charset=utf-8"});
@@ -37,7 +38,10 @@ function abrirArquivo(event) {
         var texto = event.target.result;
 
         // Define o texto do textarea para o texto do arquivo
-        document.getElementById('code').value = texto;
+        var editor = ace.edit("code");
+
+        editor.setValue(texto, -1)
+        //document.getElementById('code').value = texto;
     };
 
     // Lê o arquivo como texto
@@ -53,11 +57,10 @@ document.querySelector('.btn-abrir').addEventListener('click', function() {
 });
 
 
-
 // Função para compartilhar o código
 function compartilharCodigo() {
-    // Obtém o código do textarea
-    var codigo = document.getElementById('code').value;
+    // Obtém o código do pre
+    var codigo = document.getElementById('code').value = texto;
 
     // Cria um novo URLSearchParams
     var params = new URLSearchParams();
