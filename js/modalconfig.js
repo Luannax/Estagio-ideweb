@@ -18,9 +18,8 @@ function abrirModalConfig() {
 document.querySelector('.btn-config').addEventListener('click', abrirModalConfig);
 
 
-// Adiciona um ouvinte de evento ao select
-document.querySelector('.form-select').addEventListener('change', mudarLinguagem);
 
+//Limpa a tela escura
 $(document).ready(function() {
     $('.btn-compartilhar').click(compartilharCodigo);
 
@@ -30,7 +29,7 @@ $(document).ready(function() {
         if (valor === '1') {
             linguagemAtual = 'Python';
         } else if (valor === '2') {
-            linguagemAtual = 'Portugol';
+            linguagemAtual = 'JavaScript';
         }
     });
 
