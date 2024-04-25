@@ -1,20 +1,16 @@
 
-navbar{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffffff;
-    padding: 10px 20px;
+.navbar{
+  background-color: #d0d0d0;
 }
 
 .container-btnAcessSelect{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 60rem;
+    margin-left: 50rem;
 }
 
-.input-algoritmo {
+.input-algoritmo, .output-algoritmo  {
     position: relative;
     width: 80rem;
     height:20rem;
@@ -22,14 +18,16 @@ navbar{
     border: 2px solid #727171;
 }
 
-#terminal {
-    background-color: #f8f9fa;
-    border: none;
-    resize: none;
-    font-size: 14px;
-    padding: 10px;
-    
+pre{
+  height: 19.8rem;
 }
+
+/* Cor da quantidade de linha do input-algoritmo */
+div.ace_layer.ace_gutter-layer.ace_folding-enabled{
+  background-color: rgba(77, 74, 74, 0.472);
+}
+
+
 
 /*footer*/
 .footer {
@@ -46,4 +44,3 @@ navbar{
     color: #007bff;
     text-decoration: none;
 }
-
