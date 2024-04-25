@@ -12,7 +12,7 @@ function salvarCodigo() {
 
     // Cria um link de download para o Blob
     var link = document.createElement('a');
-    link.download = 'codigo.' + (linguagemAtual === 'Python' ? 'py' : 'por');
+    link.download = 'codigo.' + (linguagemAtual === 'Python' ? 'py' : 'js');
     link.href = url;
 
     // Simula um no link de download
@@ -95,6 +95,6 @@ function mudarLinguagem(event) {
     if (valor === '1') {
         linguagemAtual = 'Python';
     } else if (valor === '2') {
-        linguagemAtual = 'Portugol';
+        linguagemAtual = 'JavaScript';
     }
 }
