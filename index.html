@@ -75,7 +75,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-center mt-5 input-algoritmo">
-                        <pre id="code" name="code" class="form-control ">print("Hello world!")</pre>
+                        <div id="code" name="code" class="form-control "></div>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 <div class="col-12">
                     <div class="d-flex justify-content-start mt-3">
                         <!--Btn executar-->
-                        <button class="btn btn-success ">
+                        <button  class="btn btn-success ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                                 <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
                             </svg>
@@ -296,7 +296,10 @@
         </div>
     </footer>
 
-   
+    <!--Bibliotecas necessarias para o Ace funcionar-->
+    <script src="src-noconflict/mode-javascript.js"></script>
+    <script src="src-noconflict/ext-language_tools.js"></script>
+    <script src="src-noconflict/ace.js" type="text/JavaScript" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Link para a biblioteca jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/ff7538096c.js" crossorigin="anonymous"></script>
@@ -304,12 +307,6 @@
     <script src="./js/script.js"></script> <!-- Link para o arquivo JavaScript que contém a lógica do programa -->
     <script src="./js/modalconfig.js"></script>
     <script src="./js/toggle.js"></script>
-    <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Define o pre como o editor da pagina web e altera o tema do editor -->
-    <script>
-        var editor = ace.edit("code");
-        editor.setTheme("ace/theme/dark");
-        editor.session.setMode("ace/mode/python");
-    </script>
+    <script src="./js/editor.js"></script><!-- Link para o arquivo JavaScript que contém a lógica do editor da IDE -->
 </body>
 </html>
