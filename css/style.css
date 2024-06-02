@@ -3,6 +3,9 @@
   background-color: #d0d0d0;
 }
 
+.logo {
+  margin-top: -10px;
+}
 .container-btnAcessSelect{
     display: flex;
     justify-content: space-between;
@@ -16,6 +19,28 @@
     height:20rem;
     border-radius: 5px;
     border: 2px solid #727171;
+}
+
+.container-config{
+  margin-left: 20rem;
+  margin-top: 10rem;
+}
+
+.submenu-geral{
+  margin-bottom: 20rem;
+}
+
+form {
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 pre{
@@ -44,3 +69,26 @@ div.ace_layer.ace_gutter-layer.ace_folding-enabled{
     color: #007bff;
     text-decoration: none;
 }
+
+
+/*----------------------------------------------------------------*/
+
+/* CSS for Geral tab content */
+#geral .form-label {
+  font-weight: bold;
+}
+
+#geral .form-check-label {
+  margin-left: 10px;
+}
+
+#geral .btn {
+  margin-top: 20px;
+}
+
+#geral, #fala, #camera, #audio, #teclado, #mouse, #braille, #navegacao{
+  padding: 150px;
+  width: 70%;
+  margin: 0 auto;
+}
+
