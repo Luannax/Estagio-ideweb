@@ -2,18 +2,23 @@
 <html> <!-- Início do documento HTML -->
 <head> <!-- Cabeçalho do documento, que contém metadados -->
     <title>IDE Web</title> <!-- Título do documento, que aparece na aba do navegador -->
-    <link rel="icon" href="./img/iconnvdaplus2.png">
+    <link rel="icon" href="./logos/11.png">
     <link rel="stylesheet" href="./css/style.css"> <!-- Link para o arquivo CSS que estiliza a página -->
     <link rel="stylesheet" href="css/escuro.css">
     <link rel="stylesheet" href="css/media.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
+<script src="./js/WebSpeechAPI.js"></script>
+
 <body> <!-- Corpo do documento-->
-    <!--Navbar-->
+    <!--Navbar-->   
     <nav class="navbar " style="height: 3.5rem;">
         <div class="container">
           <a class="navbar-brand" href="#">
-            <img src="./img/iconnvdaplus2.png" alt="Bootstrap" width="50" height="40" alt="Imagem no canto superior esquerdo, icon do IdeWeb com o Leitor de tela">
+            <img src="./logos/11.png" class="logo"
+            width="55" 
+            height="50" 
+            alt="Imagem no canto superior esquerdo, icon do IdeWeb com o Leitor de tela">
           </a>   
         </div>
     </nav>
@@ -26,14 +31,16 @@
                 <div class="col-12">
                     <div class="d-flex justify-content-start mt-3">
                         <!--Btn salvar-->
-                        <button class="btn btn-outline-primary btn-salvar">
+                        <button class="btn btn-outline-primary btn-salvar"
+                        aria-label="Salvar código, localizado no lado esquero, no canto superior" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
                                 <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
                                 <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
                             </svg>
                         </button>
                         <!--Btn pasta-->
-                        <button class="btn btn-outline-primary ms-2 btn-abrir">
+                        <button class="btn btn-outline-primary ms-2 btn-abrir"
+                        aria-label="abrir pasta, localizado no lado esquerdo, no canto superior">
                             <input type="file" id="file-input" style="display: none;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-fill" viewBox="0 0 16 16">
                                 <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
@@ -43,7 +50,10 @@
 
                         <!--Btn acessibilidade-->
                         <div class="d-flex justify-content-end container-btnAcessSelect">
-                            <button class="btn btn-primary btn-acessibilidade" data-bs-toggle="modal" data-bs-target="#modalAcessibilidade">
+                            <button class="btn btn-primary btn-acessibilidade" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#modalAcessibilidade"
+                            aria-label="Acessibilidade, (este botão abre as configurações do leitor de tela), localizado no lado direito, no canto superior">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-universal-access-circle" viewBox="0 0 16 16">
                                     <path d="M8 4.143A1.071 1.071 0 1 0 8 2a1.071 1.071 0 0 0 0 2.143m-4.668 1.47 3.24.316v2.5l-.323 4.585A.383.383 0 0 0 7 13.14l.826-4.017c.045-.18.301-.18.346 0L9 13.139a.383.383 0 0 0 .752-.125L9.43 8.43v-2.5l3.239-.316a.38.38 0 0 0-.047-.756H3.379a.38.38 0 0 0-.047.756Z"/>
                                     <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8"/>
@@ -51,19 +61,22 @@
                             </button>
 
                             <!--select para escolher a lingagem python ou portugol-->
-                            <select class="form-select ms-2" aria-label="Default select example">
-                                <option value="1" >🐍 Python</option>
-                                <option value="2">🔡 JavaScript</option>
+                            <select class="form-select ms-2" 
+                            aria-label="da linguagem de programação, localizado no lado direito, na parte superior">
+                                <option value="1"
+                                ><!--🐍--> Python</option>
+                                <option value="2"
+                                ><!--🔡--> JavaScript</option>
                             </select>
                         </div>
 
                         <!--Btn tema claro/escuro-->
-                        <div class="ms-5  d-flex align-items-center container-btn-toggle">
+                        <div class="ms-5  d-flex align-items-center container-btn-toggle" tabindex="0">
                             <i class="far fa-sun " title="Claro"></i>
                             <div class="toggle ms-2 " >
                                 <input id="switch" type="checkbox" name="theme">
-                                <label for="switch">Toggle</label>
-                            </div>
+                                <label id="labels" for="switch">Toggle</label>
+                            </div> 
                             <i class="far fa-moon ms-2" title="Escuro"></i>
                         </div>
                     </div>
@@ -76,7 +89,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-center mt-5 input-algoritmo">
-                        <div id="code" name="code" class="form-control "></div>
+                        <div id="code" name="code" class="form-control " tabindex="0" role="textbox"></div>
                     </div>
                 </div>
             </div>
@@ -126,35 +139,41 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalAcessibilidadeLabel">Bem-vindo ao NVDA!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        <h5 class="modal-title" id="modalAcessibilidadeLabel" 
+                        tabindex="1"
+                        >Bem-vindo as configurações do Web Speech!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar, localizado na parte superior direita"
+                        tabindex="2"
+                        ></button>
                     </div>
-                    <div class="modal-body">
-                        Grande parte dos comandos para controlar o NVDA requer que se pressione a tecla NVDA e a outra ao mesmo tempo. Por padrão, tanto a tecla Insert do teclado 
-                        numério como o Insert principal pode ser usado como a tecla NVDA. Você também pode configurar o NVDA para usar a tecla Caps Lock como a tecla NVDA. Pressione 
-                        NVDA+n a qualquer momento para ativar o menu do NVDA. A partit desse menu, você pode configurar o NVDA, obter ajuda e acessar outras funções do mesmo. 
+                    <div class="modal-body" tabindex="3">
+                        Comandos básicos para controlar o leitor de tela Web Speech. 
+                        A partir desse menu, você pode configurar o Web Speech, obter ajuda e acessar outras funções do mesmo. 
                         Aqui estão alguns exemplos:
                         <ul>
-                            <li>Para ler o título da janela atual, pressione NVDA+t.</li>
-                            <li>Para ler o título da janela atual, pressione NVDA+t.</li>
-                            <li>Para ler o título da janela atual, pressione NVDA+t.</li>
-                            <li>Para ler o título da janela atual, pressione NVDA+t.</li>
+                            <li>Para ler o nome do site, pressione a tecla <b>L</b>.</li>
+                            <li>Para mutar o leitor de tela, pressione a tecla <b>P</b>.</li>
+                            <li>Para continuar a leitura da onde parou, pressione a tecla <b>R</b>.</li>
+                            <li>Para navegar na Ide Web, pressione a tecla <b>TAB</b>.</li>
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-config" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalConfig">
+                        <button type="button" tabindex="4" class="btn btn-secondary btn-config" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalConfig"
+                        aria-label="abrir configurações do leitor de tela, localizado na parte inferior direita.">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                                 <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>
                             </svg>
                             Configurações
                         </button>
-                        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">OK</button>
+                        <button type="button" tabindex="5" class="btn btn-outline-success" data-bs-dismiss="modal"
+                        aria-label="concluir configurações do modal do leitor de tela, localizado na parte inferior direita"
+                        >OK</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!--Modal de config do Leitor de tela-->
+        <!-- Modal de config do Leitor de tela -->
         <div class="modal fade" id="modalConfig" tabindex="-1" aria-labelledby="modalConfigLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
@@ -163,9 +182,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
-                        <!--Configurações-->
+                        <!-- Configurações -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <!--Geral-->
+                            <!-- Geral -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="geral-tab" data-bs-toggle="tab" data-bs-target="#geral" type="button" role="tab" aria-controls="geral" aria-selected="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders2" viewBox="0 0 16 16">
@@ -173,16 +192,8 @@
                                     </svg>
                                     Geral
                                 </button>
-                                <!--
-                                    - Precisa conter se o usuário está usando computador de mesa ou notebook  
-                                    - tocar sons 
-                                    - salvar configurações ao sair 
-                                    - Iniciar o NVDA quando abrir a página
-                                    - Selecionar o idioma 
-                                    - Btn de aplicar abaixo
-                                -->
                             </li>
-                            <!--Fala-->
+                            <!-- Fala -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="fala-tab" data-bs-toggle="tab" data-bs-target="#fala" type="button" role="tab" aria-controls="fala" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic-fill" viewBox="0 0 16 16">
@@ -191,14 +202,8 @@
                                     </svg>
                                     Fala
                                 </button>
-                                <!--
-                                    - Ter um sintetizador de voz(escolher qual voz o usuário deseja)  
-                                    - Mudar a velocidade da voz  
-                                    - Tom  
-                                    - Volume 
-                                -->
                             </li>
-                            <!--Camera-->
+                            <!-- Câmera -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="camera-tab" data-bs-toggle="tab" data-bs-target="#camera" type="button" role="tab" aria-controls="camera" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-webcam-fill" viewBox="0 0 16 16">
@@ -207,17 +212,8 @@
                                     </svg>
                                     Câmera
                                 </button>
-                                <!--
-                                    - Selecionar dispositivo de câmera
-                                    - Ajustar brilho
-                                    - Ajustar contraste
-                                    - Ajustar saturação
-                                    - Ajustar nitidez
-                                    - Ajustar zoom
-                                    - ia do Pedro
-                                -->
-
-                            <!--Áudio-->
+                            </li>
+                            <!-- Áudio -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="audio-tab" data-bs-toggle="tab" data-bs-target="#audio" type="button" role="tab" aria-controls="audio" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-volume-up-fill" viewBox="0 0 16 16">
@@ -227,12 +223,8 @@
                                     </svg>
                                     Áudio
                                 </button>
-                                <!--
-                                    - Selecionar dispositivo de saída do pc ou notebook
-                                    - Ajustar volume
-                                -->
                             </li>
-                            <!--Teclado-->
+                            <!-- Teclado -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="teclado-tab" data-bs-toggle="tab" data-bs-target="#teclado" type="button" role="tab" aria-controls="teclado" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-keyboard-fill" viewBox="0 0 16 16">
@@ -240,15 +232,8 @@
                                     </svg>
                                     Teclado
                                 </button>
-                                <!-- 
-                                    - Selecionar se o teclado é do pc de mesa
-                                    - Select falar caracteres digitados
-                                    - Select falar palavras digitadas
-                                    - Tecla enter interrompe fala
-                                    - Tocar som para erros ortográficos ao digitar
-                                -->
                             </li>
-                            <!--Mouse-->
+                            <!-- Mouse -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="mouse-tab" data-bs-toggle="tab" data-bs-target="#mouse" type="button" role="tab" aria-controls="mouse" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mouse2-fill" viewBox="0 0 16 16">
@@ -256,13 +241,8 @@
                                     </svg>
                                     Mouse
                                 </button>
-                                <!--
-                                    - Anunciar mudanças no formato do mouse
-                                    - Habilitar rastreamento do mouse
-                                    - Unidade de leitura de texto: 1 - paragrafo 2 - caractere 3 - linha 4 - palavra
-                                -->
                             </li>
-                            <!--Braille-->
+                            <!-- Braille -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="braille-tab" data-bs-toggle="tab" data-bs-target="#braille" type="button" role="tab" aria-controls="braille" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-keyboard" viewBox="0 0 16 16">
@@ -271,25 +251,224 @@
                                     </svg>
                                     Braille
                                 </button>
-                                <!-- 
-                                    - Pesquisar para entender melhor
-                                -->
                             </li>
-                            <!--Modo de navegação-->
+                            <!-- Modo de navegação -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="navegacao-tab" data-bs-toggle="tab" data-bs-target="#navegacao" type="button" role="tab" aria-controls="navegacao" aria-selected="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
                                         <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5"/>
                                     </svg>
-                                    Modo de Navegação
+                                    Modo de navegação
                                 </button>
-                                <!--
-                                    - Máximo de caracteres por liha 
-                                    - Linhas por página
-                                    - Ativar modo de naveação ao carregar página 
-                                -->
                             </li>
                         </ul>
+
+                        <!-- Conteúdo das abas -->
+                        <div class="tab-content" id="myTabContent">
+
+                            <!-- Tab content for Geral -->
+                            <div class="tab-pane fade show active" id="geral" role="tabpanel" aria-labelledby="geral-tab">
+                                <div class="mb-3">
+                                    <label for="deviceType" class="form-label">Tipo de dispositivo</label>
+                                    <select class="form-select" id="deviceType">
+                                        <option value="desktop">Computador de mesa</option>
+                                        <option value="notebook">Notebook</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="playSounds">
+                                    <label class="form-check-label" for="playSounds">
+                                        Tocar sons
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="saveSettings">
+                                    <label class="form-check-label" for="saveSettings">
+                                        Salvar configurações ao sair
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="startNVDA">
+                                    <label class="form-check-label" for="startNVDA">
+                                        Iniciar o NVDA quando abrir a página
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="languageSelect" class="form-label">Selecionar o idioma</label>
+                                    <select class="form-select" id="languageSelect">
+                                        <option value="pt" selected>Português</option>
+                                        <option value="en">Inglês</option>
+                                        <option value="es">Espanhol</option>
+                                        <!-- Adicionar mais opções de idioma conforme necessário -->
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" id="applySettings">Aplicar</button>
+                            </div>
+
+                            <!-- Fala -->
+                            <div class="tab-pane fade" id="fala" role="tabpanel" aria-labelledby="fala-tab">
+                                <div class="mb-3">
+                                    <label for="voiceSelect" class="form-label">Selecionar sintetizador de voz</label>
+                                    <select class="form-select" id="voiceSelect">
+                                        <option selected>Voz padrão</option>
+                                        <option>Voz alternativa 1</option>
+                                        <option>Voz alternativa 2</option>
+                                        <!-- Adicionar mais opções de voz conforme necessário -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voiceSpeed" class="form-label">Velocidade da voz</label>
+                                    <input type="range" class="form-range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voicePitch" class="form-label">Tom</label>
+                                    <input type="range" class="form-range" id="voicePitch" min="0" max="2" step="0.1" value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voiceVolume" class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="voiceVolume" min="0" max="1" step="0.1" value="1">
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+
+                            <!-- Câmera -->
+                            <div class="tab-pane fade" id="camera" role="tabpanel" aria-labelledby="camera-tab">
+                                <div class="mb-3">
+                                    <label for="cameraDeviceSelect" class="form-label">Selecionar dispositivo de câmera</label>
+                                    <select class="form-select" id="cameraDeviceSelect">
+                                        <option selected>Câmera integrada</option>
+                                        <option>Câmera externa 1</option>
+                                        <option>Câmera externa 2</option>
+                                        <!-- Adicionar mais opções de câmera conforme necessário -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cameraBrightness" class="form-label">Brilho</label>
+                                    <input type="range" class="form-range" id="cameraBrightness" min="0" max="100" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cameraContrast" class="form-label">Contraste</label>
+                                    <input type="range" class="form-range" id="cameraContrast" min="0" max="100" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cameraSaturation" class="form-label">Saturação</label>
+                                    <input type="range" class="form-range" id="cameraSaturation" min="0" max="100" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cameraSharpness" class="form-label">Nitidez</label>
+                                    <input type="range" class="form-range" id="cameraSharpness" min="0" max="100" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cameraZoom" class="form-label">Zoom</label>
+                                    <input type="range" class="form-range" id="cameraZoom" min="1" max="10" value="1">
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+
+                            <!-- Áudio -->
+                            <div class="tab-pane fade" id="audio" role="tabpanel" aria-labelledby="audio-tab">
+                                <div class="mb-3">
+                                    <label for="audioOutputSelect" class="form-label">Selecionar dispositivo de saída</label>
+                                    <select class="form-select" id="audioOutputSelect">
+                                        <option selected>Alto-falantes integrados</option>
+                                        <option>Fones de ouvido</option>
+                                        <option>Caixa de som externa</option>
+                                        <!-- Adicionar mais opções de dispositivo conforme necessário -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="audioVolume" class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="audioVolume" min="0" max="100" value="50">
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+
+                            <!-- Teclado -->
+                            <div class="tab-pane fade" id="teclado" role="tabpanel" aria-labelledby="teclado-tab">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="desktopKeyboard">
+                                    <label class="form-check-label" for="desktopKeyboard">
+                                        Teclado de computador de mesa
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="speakTypedCharacters">
+                                    <label class="form-check-label" for="speakTypedCharacters">
+                                        Falar caracteres digitados
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="speakTypedWords">
+                                    <label class="form-check-label" for="speakTypedWords">
+                                        Falar palavras digitadas
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="enterInterruptsSpeech">
+                                    <label class="form-check-label" for="enterInterruptsSpeech">
+                                        Tecla Enter interrompe fala
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="soundForErrors">
+                                    <label class="form-check-label" for="soundForErrors">
+                                        Tocar som para erros ortográficos ao digitar
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+
+                            <!-- Mouse -->
+                            <div class="tab-pane fade" id="mouse" role="tabpanel" aria-labelledby="mouse-tab">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="announceMouseShape">
+                                    <label class="form-check-label" for="announceMouseShape">
+                                        Anunciar mudanças no formato do mouse
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="enableMouseTracking">
+                                    <label class="form-check-label" for="enableMouseTracking">
+                                        Habilitar rastreamento do mouse
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="textUnit" class="form-label">Unidade de leitura de texto</label>
+                                    <select class="form-select" id="textUnit">
+                                        <option value="1">Parágrafo</option>
+                                        <option value="2">Caractere</option>
+                                        <option value="3">Linha</option>
+                                        <option value="4">Palavra</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+
+                            <!-- Braille -->
+                            <div class="tab-pane fade" id="braille" role="tabpanel" aria-labelledby="braille-tab">
+                                <p>Configurações específicas para Braille estarão aqui (pesquisar para entender melhor).</p>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+                            
+                            <!-- Modo de navegação -->
+                            <div class="tab-pane fade" id="navegacao" role="tabpanel" aria-labelledby="navegacao-tab">
+                                <div class="mb-3">
+                                    <label for="maxCharsPerLine" class="form-label">Máximo de caracteres por linha</label>
+                                    <input type="number" class="form-control" id="maxCharsPerLine" value="80">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="linesPerPage" class="form-label">Linhas por página</label>
+                                    <input type="number" class="form-control" id="linesPerPage" value="25">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="activateNavigationMode">
+                                    <label class="form-check-label" for="activateNavigationMode">
+                                        Ativar modo de navegação ao carregar página
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-primary">Aplicar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
