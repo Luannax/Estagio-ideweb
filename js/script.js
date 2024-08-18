@@ -1,7 +1,9 @@
 // Função para salvar o código em um arquivo
 function salvarCodigo() {
     // Obtém o código do pre
-    var codigo = document.getElementById('code').value;
+    var codigo = ace.edit("code").getValue();
+    
+    //document.getElementById('code').value;
     
 
     // Cria um novo Blob com o código
