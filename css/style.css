@@ -92,3 +92,10 @@ div.ace_layer.ace_gutter-layer.ace_folding-enabled{
   margin: 0 auto;
 }
 
+
+/*Btn de voz Elismara*/
+#chamarbtnUserVoz {
+  position: relative;
+  left: -10px;
+  top: 0;
+}
