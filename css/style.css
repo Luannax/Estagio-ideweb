@@ -87,9 +87,10 @@ div.ace_layer.ace_gutter-layer.ace_folding-enabled{
 }
 
 #geral, #fala, #camera, #audio, #teclado, #mouse, #braille, #navegacao{
-  padding: 150px;
-  width: 70%;
+  padding: 200px;
+  width: 100%;
   margin: 0 auto;
+  margin-bottom: 340px;
 }
 
 
