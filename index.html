@@ -134,7 +134,7 @@
                     <div class="d-flex justify-content-center output-algoritmo mt-3" >
                         <!--@ApN-Jonas--> 
                         <!--No terminal eu tive que colocar pre, mas se não der certo vc pode mudar para textarea-->
-                        <pre id="terminal" name="terminal" class="form-control " rows="10"></pre>
+                        <textarea id="terminal" name="terminal" class="form-control " rows="10" readonly></textarea>
                     </div>
                 </div>
             </div>
@@ -506,6 +506,7 @@
     <script src="./js/toggle.js"></script>
     <script src="./js/editor.js"></script><!-- Link para o arquivo JavaScript que contém a lógica do editor da IDE -->
     <script src="./js/voice.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.0/full/pyodide.js" ></script>
     <script>
         // Chama a função populateAudioOutputDevices quando a página carregar
         window.addEventListener('load', function() {
