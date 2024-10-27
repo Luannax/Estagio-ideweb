@@ -87,16 +87,45 @@ div.ace_layer.ace_gutter-layer.ace_folding-enabled{
 }
 
 #geral, #fala, #camera, #audio, #teclado, #mouse, #braille, #navegacao{
-  padding: 200px;
-  width: 100%;
+  padding: 150px;
+  width: 70%;
   margin: 0 auto;
-  margin-bottom: 340px;
 }
 
+/*<div id="settingsMessage" class="mt-3" style="display: none;">Configurações aplicadas com sucesso!</div>*/
+#settingsMessage {
+  display: none;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d4edda;
+  color: #155724;
+}
+#settingsMessage.show {
+  display: block;
+}
+#settingsMessage.close {
+  display: none;
+}
+#settingsMessage.close:hover {
+  cursor: pointer;
+}
+#settingsMessage.close::before {
+  content: "X";
+  float: right;
+  font-weight: bold;
+  color: #155724;
+}
+#settingsMessage::before {
+  font-weight: bold;
+  color: #155724;
+  /*centralizar*/
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+  text-align: center;
+}
 
-/*Btn de voz Elismara*/
-#chamarbtnUserVoz {
-  position: relative;
-  left: -10px;
-  top: 0;
+#chamarbtnUserVoz{
+  margin-right: 10px;
 }
