@@ -20,10 +20,14 @@ function Ler_Elementos() {
     const ElementoFocado = document.activeElement; // Obtém o elemento atualmente focado
     const speech = new SpeechSynthesisUtterance(); // Cria um novo objeto de síntese de fala
 
-    // Verifica se o elemento focado é o campo de código; se for, ignora a leitura
-    if (ElementoFocado.id === 'code') return;
-
-    if (ElementoFocado.tagName === 'A') { // Se o elemento focado for um link
+    // Verifica se o elemento focado é o campo de código; se for, pega diretamente o que está no editor e passa para o speech.text 
+    if (ElementoFocado.id === 'code') {
+        let codeEditor = ace.edit("code", {
+            mode: "ace/mode/python",
+            selectionStyle: "text"
+        })
+        speech.text = codeEditor.getValue();
+    }else if (ElementoFocado.tagName === 'A') { // Se o elemento focado for um link
         const img = ElementoFocado.querySelector('img'); // Procura uma imagem dentro do link
         speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Define o texto da fala
     } else if (ElementoFocado.tagName === 'BUTTON') { // Se o elemento focado for um botão
