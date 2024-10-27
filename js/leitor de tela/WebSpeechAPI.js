@@ -1,255 +1,83 @@
-// Variáveis globais para armazenar configurações de voz
-let selectedVoice = null;
-let selectedRate = 1;
-let selectedPitch = 1;
-let selectedVolume = 1;
-
-// Função para configurar o utterance com as configurações globais
-function configureUtterance(utterance) {
-    utterance.voice = selectedVoice;
-    utterance.rate = selectedRate;
-    utterance.pitch = selectedPitch;
-    utterance.volume = selectedVolume;
+// Função para configurar os parâmetros da fala
+function configureUtterance(speech) {
+    speech.lang = 'pt-BR'; // Define o idioma para Português
+    speech.rate = 1; // Velocidade da fala
+    speech.pitch = 1; // Tom da fala
+    speech.volume = 1; // Volume da fala
 }
 
-// Função para ler o título do site
-function readTitle() {
-    var speech = new SpeechSynthesisUtterance();
-    speech.text = "Ambiente de Desenvolvimento Integrado Web com Leitor de Tela";
-    window.speechSynthesis.speak(speech);
+// Função para iniciar a leitura
+function Iniciar_Leitura(speech) {
+    window.speechSynthesis.speak(speech); // Inicia a síntese de fala com o objeto speech
 }
 
-// Variável para armazenar a instância do SpeechSynthesisUtterance atual
-let currentSpeech = null;
-
-// Função para ler o elemento focado via tab
-function readFocusedElement() {
-    if (currentSpeech) {
-        window.speechSynthesis.cancel();
+// Função para ler o elemento focado (exceto o campo de código)
+function Ler_Elementos() {
+    if (window.speechSynthesis.speaking) { // Verifica se já está falando
+        window.speechSynthesis.cancel(); // Cancela a fala atual
     }
 
-    const focusedElement = document.activeElement;
-    const speech = new SpeechSynthesisUtterance();
+    const ElementoFocado = document.activeElement; // Obtém o elemento atualmente focado
+    const speech = new SpeechSynthesisUtterance(); // Cria um novo objeto de síntese de fala
 
-    if (focusedElement.tagName === 'A') {
-        const img = focusedElement.querySelector('img');
-        speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + focusedElement.textContent;
-    } else if (focusedElement.tagName === 'BUTTON') {
-        speech.text = focusedElement.getAttribute('aria-label') || "Botão: " + focusedElement.textContent;
-    } else if (focusedElement.tagName === 'SELECT') {
-        const selectedOption = focusedElement.options[focusedElement.selectedIndex];
-        speech.text = focusedElement.getAttribute('aria-label') + ", opção selecionada: " + selectedOption.text;
-    } else if (focusedElement.classList.contains('container-btn-toggle')) {
-        const switchElement = focusedElement.querySelector('#switch');
-        speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado";
-    } else if (focusedElement.classList.contains('modal-title') || focusedElement.classList.contains('modal-body')) {
-        speech.text = focusedElement.textContent;
+    // Verifica se o elemento focado é o campo de código; se for, ignora a leitura
+    if (ElementoFocado.id === 'code') return;
+
+    if (ElementoFocado.tagName === 'A') { // Se o elemento focado for um link
+        const img = ElementoFocado.querySelector('img'); // Procura uma imagem dentro do link
+        speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Define o texto da fala
+    } else if (ElementoFocado.tagName === 'BUTTON') { // Se o elemento focado for um botão
+        speech.text = ElementoFocado.getAttribute('aria-label') || "Botão: " + ElementoFocado.textContent; // Define o texto da fala
+    } else if (ElementoFocado.tagName === 'SELECT') { // Se o elemento focado for um select
+        const selectedOption = ElementoFocado.options[ElementoFocado.selectedIndex]; // Obtém a opção selecionada
+        speech.text = ElementoFocado.getAttribute('aria-label') + ", opção selecionada: " + selectedOption.text; // Define o texto da fala
+    } else if (ElementoFocado.classList.contains('container-btn-toggle')) { // Se o elemento focado for um botão de alternância
+        const switchElement = ElementoFocado.querySelector('#switch'); // Procura o switch dentro do botão
+        speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado"; // Define o texto da fala
     } else {
-        speech.text = " " + focusedElement.tagName + ", " + focusedElement.textContent;
+        speech.text = ElementoFocado.textContent; // Define o texto da fala para o conteúdo do elemento focado
     }
 
-    // Configura e fala
+    console.log(`Lendo: ${speech.text}`); // mostra o texto que será lido no console do navegador
+    configureUtterance(speech); // Configura os parâmetros da fala
+    Iniciar_Leitura(speech); // Inicia a leitura
+}
+
+// Função para ler uma mensagem ao entrar no campo de código
+function Ler_CampoCodigoFocado() {
+    console.log("Focado no campo de código"); // mostra o texto que será lido no console do navegador
+    const speech = new SpeechSynthesisUtterance("Você está no campo de entrada para digitar o código."); // Cria um objeto de síntese de fala com a mensagem
+    configureUtterance(speech); // Configura os parâmetros da fala
+    Iniciar_Leitura(speech); // Inicia a leitura
+}
+
+// Função para ler a última palavra ao pressionar espaço
+function Ler_UltimaPalavra(event) {
+    if (event.key === ' ') { // Detecta se a tecla pressionada é espaço
+        const texto = document.getElementById('code').innerText.trim(); // Obtém o texto do div e remove espaços em branco
+        const palavras = texto.split(/\s+/); // Divide o texto em palavras
+        const ultimaPalavra = palavras[palavras.length - 1]; // Obtém a última palavra
+
+        const speech = new SpeechSynthesisUtterance(`Palavra digitada: ${ultimaPalavra}`); // Cria um objeto de síntese de fala com a última palavra
+        configureUtterance(speech); // Configura os parâmetros da fala
+        Iniciar_Leitura(speech); // Inicia a leitura
+        console.log(`Última palavra: ${ultimaPalavra}`); // mostra o texto que será lido no console do navegador
+    }
+}
+
+// Event listener para ler elementos focados ao pressionar Tab
+document.addEventListener('focusin', Ler_Elementos); // Adiciona um listener para o evento de foco
+
+// Configura eventos específicos para o campo de código
+const codeField = document.getElementById('code'); // Obtém o campo de código
+codeField.addEventListener('focus', Ler_CampoCodigoFocado); // Lê ao focar no campo
+codeField.addEventListener('keydown', Ler_UltimaPalavra); // Lê a última palavra ao pressionar espaço
+
+// Para simular a digitação no campo de código
+codeField.addEventListener('keydown', (event) => {
+    // A cada tecla pressionada, você pode ler o que está sendo digitado, se necessário
+    const textoAtual = codeField.innerText; // Obtém o texto atual
+    const speech = new SpeechSynthesisUtterance(`${textoAtual}`);
     configureUtterance(speech);
-    currentSpeech = speech;
-    speech.onend = function() {
-        currentSpeech = null;
-    };
-    window.speechSynthesis.speak(speech);
-}
-
-
-// Função para pausar a leitura
-function pauseReading() {
-    window.speechSynthesis.pause();
-}
-
-// Função para retomar a leitura
-function resumeReading() {
-    window.speechSynthesis.resume();
-}
-
-/**Evento para ler o título quando a página é carregada
-window.addEventListener('DOMContentLoaded', function() {
-    var speech = new SpeechSynthesisUtterance();
-    speech.text = "Ambiente de Desenvolvimento Integrado Web com Leitor de Tela";
-    window.speechSynthesis.speak(speech);
-});*/
-
-// Evento para ler o elemento focado quando o usuário navega via tab
-window.addEventListener('keyup', function(event) {
-    // Verifica se a tecla pressionada é a tecla Tab e não está em um campo de entrada de texto
-    if (event.keyCode === 9 && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') { 
-        readFocusedElement();
-    }
-    else if (event.keyCode === 80) { // Verifica se a tecla pressionada é a tecla P
-        event.preventDefault(); // Impede o comportamento padrão da tecla de espaço
-        pauseReading();
-    }
-    else if (event.keyCode === 82) { // Verifica se a tecla pressionada é a tecla 'R'
-        resumeReading();
-    }
-    else if (event.keyCode === 76) { // Verifica se a tecla pressionada é a tecla L
-        readTitle();
-    }
-});
-
-
-
-//Menu Geral
-document.addEventListener('DOMContentLoaded', (event) => {
-    const deviceType = document.getElementById('deviceType');
-    const saveSettings = document.getElementById('saveSettings');
-    const startNVDA = document.getElementById('startNVDA');
-    const languageSelect = document.getElementById('languageSelect');
-    const applySettings = document.getElementById('applySettings');
-    const settingsMessage = document.getElementById('settingsMessage');
-
-    const translations = {
-        en: {
-            deviceTypeLabel: "Device Type",
-            desktopOption: "Desktop",
-            notebookOption: "Notebook",
-            saveSettingsLabel: "Save settings on exit",
-            startNVDALabel: "Start NVDA when opening the page",
-            languageSelectLabel: "Select Language",
-            portugueseOption: "Portuguese",
-            englishOption: "English",
-            applyButton: "Apply",
-            settingsMessage: "Settings applied successfully!"
-        },
-        pt: {
-            deviceTypeLabel: "Tipo de dispositivo",
-            desktopOption: "Computador de mesa",
-            notebookOption: "Notebook",
-            saveSettingsLabel: "Salvar configurações ao sair",
-            startNVDALabel: "Iniciar o NVDA quando abrir a página",
-            languageSelectLabel: "Selecionar o idioma",
-            portugueseOption: "Português",
-            englishOption: "Inglês",
-            applyButton: "Aplicar",
-            settingsMessage: "Configurações aplicadas com sucesso!"
-        }
-    };
-
-    // Carregar configurações salvas
-    function loadSettings() {
-        const settings = JSON.parse(localStorage.getItem('settings')) || {};
-        if (settings.deviceType) deviceType.value = settings.deviceType;
-        if (settings.saveSettings !== undefined) saveSettings.checked = settings.saveSettings;
-        if (settings.startNVDA !== undefined) startNVDA.checked = settings.startNVDA;
-        if (settings.languageSelect) languageSelect.value = settings.languageSelect;
-        applyTranslations(settings.languageSelect || 'pt');
-    }
-
-    // Salvar configurações
-    function saveSettingsToLocalStorage() {
-        const settings = {
-            deviceType: deviceType.value,
-            saveSettings: saveSettings.checked,
-            startNVDA: startNVDA.checked,
-            languageSelect: languageSelect.value
-        };
-        localStorage.setItem('settings', JSON.stringify(settings));
-        console.log('Configurações salvas:', settings); // Adicionado para verificação
-    }
-
-    // Verificar configurações salvas
-    function verifySettings() {
-        const savedSettings = JSON.parse(localStorage.getItem('settings'));
-        console.log('Configurações verificadas:', savedSettings);
-        return savedSettings;
-    }
-
-    // Aplicar traduções
-    function applyTranslations(language) {
-        const elements = document.querySelectorAll('[data-lang]');
-        elements.forEach(element => {
-            const key = element.getAttribute('data-lang');
-            element.textContent = translations[language][key];
-        });
-    }
-
-    // Configurar a voz da API Web Speech
-    function configureSpeechSynthesis(language) {
-        const utterance = new SpeechSynthesisUtterance();
-        utterance.lang = language;
-        utterance.text = translations[language].settingsMessage;
-        speechSynthesis.speak(utterance);
-    }
-
-    // Aplicar configurações
-    applySettings.addEventListener('click', () => {
-        if (saveSettings.checked) {
-            saveSettingsToLocalStorage();
-        }
-        if (startNVDA.checked) {
-            // Lógica para iniciar o NVDA
-            console.log('Iniciando NVDA...');
-        }
-        console.log('Linguagem selecionada:', languageSelect.value); // Verificar linguagem selecionada
-        applyTranslations(languageSelect.value);
-        configureSpeechSynthesis(languageSelect.value); // Configurar a voz da API Web Speech
-        settingsMessage.style.display = 'block';
-        setTimeout(() => {
-            settingsMessage.style.display = 'none';
-        }, 3000);
-        verifySettings(); // Chamar a função de verificação
-    });
-
-    // Carregar configurações ao iniciar a página
-    loadSettings();
-});
-    
-//Menu de Fala/Audio
-document.addEventListener('DOMContentLoaded', () => {
-    const voiceSelect = document.getElementById('voiceSelect');
-    const voiceSpeed = document.getElementById('voiceSpeed');
-    const voicePitch = document.getElementById('voicePitch');
-    const voiceVolume = document.getElementById('voiceVolume');
-    const applyVoiceSettings = document.getElementById('applyVoiceSettings');
-    const voiceSettingsMessage = document.getElementById('voiceSettingsMessage');
-
-    let voices = [];
-
-    // Carregar vozes disponíveis
-    function loadVoices() {
-        voices = speechSynthesis.getVoices();
-        voiceSelect.innerHTML = '';
-        voices.forEach((voice, index) => {
-            const option = document.createElement('option');
-            option.textContent = `${voice.name} (${voice.lang})`;
-            option.value = index;
-            voiceSelect.appendChild(option);
-        });
-    }
-
-    // Aplicar configurações de voz globalmente
-    function applyVoiceSettingsFunc() {
-        selectedVoice = voices[voiceSelect.value];
-        selectedRate = voiceSpeed.value;
-        selectedPitch = voicePitch.value;
-        selectedVolume = voiceVolume.value;
-
-        voiceSettingsMessage.style.display = 'block';
-        setTimeout(() => {
-            voiceSettingsMessage.style.display = 'none';
-        }, 3000);
-
-        speak("Configurações de voz aplicadas com sucesso!");
-    }
-
-    function speak(text) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        configureUtterance(utterance);
-        speechSynthesis.speak(utterance);
-    }
-
-    loadVoices();
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = loadVoices;
-    }
-
-    applyVoiceSettings.addEventListener('click', applyVoiceSettingsFunc);
-
-    window.speak = speak;
+    Iniciar_Leitura(speech);
 });
