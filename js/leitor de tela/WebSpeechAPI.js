@@ -32,7 +32,7 @@ function DescreverCaractereOuPalavra(texto) {
         '-': "traco",
         '_': "underline",
         '/': "barra",
-        '\\': "barra invertida",
+        //'\\': "barra invertida",
         '|': "barra vertical",
         '=': "igual",
         '+': "mais",
@@ -108,7 +108,28 @@ function Ler_Elementos() {
             mode: "ace/mode/python",
             selectionStyle: "text"
         });
-        speech.text = LerCodigoDetalhado(codeEditor.getValue()); // Lê o código detalhadamente
+        codigo = codeEditor.getValue()
+        const codigoADetalhar = codigo.replace(/\n/g, "\\") 
+        speech.text = LerCodigoDetalhado(codigoADetalhar); // Lê o código detalhadamente
+
+        const codigoDetalhado = speech.text; 
+
+        // Divide o código em linhas
+        const linhas = codigoDetalhado.split("\\")
+
+        let codeLinha = 1;
+        for (const linha of linhas) {
+            let linhaAtual = "Linha " + codeLinha + " " + linha // adiciona a linha atual do codigo no texto que será lido
+            speech.text = linhaAtual
+            console.log(`Lendo: ${speech.text}`); // Loga o texto que será lido
+            configureUtterance(speech); // Configura os parâmetros da fala
+            
+            if(codeLinha < linhas.length) { // não ira ler se for a ultima linha do codigo, pois já será realizada ao fim da função
+                Iniciar_Leitura(speech); // Inicia a leitura
+            }
+            codeLinha++
+            }
+            
     } else if (ElementoFocado.tagName === 'A') {
         const img = ElementoFocado.querySelector('img');
         speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Lê o texto do link ou a descrição da imagem
@@ -120,9 +141,11 @@ function Ler_Elementos() {
     } else if (ElementoFocado.classList.contains('container-btn-toggle')) {
         const switchElement = ElementoFocado.querySelector('#switch');
         speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado"; // Lê o estado do tema
+    }else if (ElementoFocado.id === "terminal"){
+        
     } else {
         speech.text = ElementoFocado.textContent; // Lê o texto do elemento focado
-    }
+    } 
 
     console.log(`Lendo: ${speech.text}`); // Loga o texto que será lido
     configureUtterance(speech); // Configura os parâmetros da fala
