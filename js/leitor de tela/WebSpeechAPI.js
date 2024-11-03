@@ -1,9 +1,9 @@
 // Função para configurar os parâmetros da fala
 function configureUtterance(speech) {
-    speech.lang = 'pt-BR'; // Define o idioma para Português
-    speech.rate = 1; // Velocidade da fala
-    speech.pitch = 1; // Tom da fala
-    speech.volume = 1; // Volume da fala
+    speech.lang = 'pt-BR'; // Define o idioma como português do Brasil
+    speech.rate = 1; // Define a velocidade da fala
+    speech.pitch = 1; // Define o tom da fala
+    speech.volume = 1; // Define o volume da fala
 }
 
 // Função para iniciar a leitura
@@ -11,77 +11,130 @@ function Iniciar_Leitura(speech) {
     window.speechSynthesis.speak(speech); // Inicia a síntese de fala com o objeto speech
 }
 
-// Função para ler o elemento focado (exceto o campo de código)
+// Função para descrever cada caractere especial ou retornar a palavra diretamente
+function DescreverCaractereOuPalavra(texto) {
+    // Mapeamento de caracteres especiais
+    const caracteresEspeciais = {
+        '(': "abre parênteses",
+        ')': "fecha parênteses",
+        '{': "abre chaves",
+        '}': "fecha chaves",
+        '[': "abre colchetes",
+        ']': "fecha colchetes",
+        '"': "aspas duplas",
+        "'": "aspas simples",
+        ';': "ponto e vírgula",
+        '.': "ponto",
+        ',': "vírgula",
+        ':': "dois pontos",
+        '?': "ponto de interrogação",
+        '!': "ponto de exclamação",
+        '-': "traco",
+        '_': "underline",
+        '/': "barra",
+        '\\': "barra invertida",
+        '|': "barra vertical",
+        '=': "igual",
+        '+': "mais",
+        '*': "asterisco",
+        '&': "e comercial",
+        '%': "por cento",
+        '#': "hashtag",
+        '@': "arroba",
+        '$': "dólar",
+        '<': "menor que",
+        '>': "maior que",
+        '^': "circunflexo",
+        '~': "til",
+        '`': "crase",
+        '\t': "tabulação",
+        '\n': "quebra de linha",
+        '\r': "retorno de carro",
+        '\b': "backspace",
+        '\f': "form feed",
+        '\v': "tabulação vertical"
+    };
+    
+    // Se o texto for um caractere especial, retorna sua descrição
+    if (texto.length === 1 && caracteresEspeciais[texto]) {
+        return caracteresEspeciais[texto]; // Descreve caracteres especiais
+    } else {
+        return texto; // Lê palavras completas
+    }
+}
+
+// Função para ler o código no campo de código, distinguindo palavras e caracteres
+function LerCodigoDetalhado(codigo) {
+    let descricao = ""; // Inicializa a descrição
+    let palavraAtual = ""; // Inicializa a palavra atual
+
+    // Itera sobre cada caractere do código
+    for (let i = 0; i < codigo.length; i++) {
+        const char = codigo[i]; // Obtém o caractere atual
+        // Se for um caractere especial ou espaço, lê a palavra atual e depois o caractere especial
+        if (/\s|\W/.test(char) && char !== '_') {
+            if (palavraAtual) {
+                descricao += palavraAtual + " "; // Adiciona a palavra atual à descrição
+                palavraAtual = ""; // Reseta a palavra atual
+            }
+            descricao += DescreverCaractereOuPalavra(char) + " "; // Adiciona a descrição do caractere especial
+        } else {
+            // Continua formando uma palavra
+            palavraAtual += char; // Adiciona o caractere à palavra atual
+        }
+    }
+
+    // Adiciona a última palavra à descrição, se houver
+    if (palavraAtual) {
+        descricao += palavraAtual;
+    }
+
+    return descricao.trim(); // Retorna a descrição final sem espaços extras
+}
+
+// Função para ler o elemento focado
 function Ler_Elementos() {
-    if (window.speechSynthesis.speaking) { // Verifica se já está falando
-        window.speechSynthesis.cancel(); // Cancela a fala atual
+    // Cancela qualquer fala em andamento
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
     }
 
     const ElementoFocado = document.activeElement; // Obtém o elemento atualmente focado
     const speech = new SpeechSynthesisUtterance(); // Cria um novo objeto de síntese de fala
 
-    // Verifica se o elemento focado é o campo de código; se for, pega diretamente o que está no editor e passa para o speech.text 
+    // Verifica o tipo de elemento focado e define o texto da fala
     if (ElementoFocado.id === 'code') {
         let codeEditor = ace.edit("code", {
             mode: "ace/mode/python",
             selectionStyle: "text"
-        })
-        speech.text = codeEditor.getValue();
-    }else if (ElementoFocado.tagName === 'A') { // Se o elemento focado for um link
-        const img = ElementoFocado.querySelector('img'); // Procura uma imagem dentro do link
-        speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Define o texto da fala
-    } else if (ElementoFocado.tagName === 'BUTTON') { // Se o elemento focado for um botão
-        speech.text = ElementoFocado.getAttribute('aria-label') || "Botão: " + ElementoFocado.textContent; // Define o texto da fala
-    } else if (ElementoFocado.tagName === 'SELECT') { // Se o elemento focado for um select
-        const selectedOption = ElementoFocado.options[ElementoFocado.selectedIndex]; // Obtém a opção selecionada
-        speech.text = ElementoFocado.getAttribute('aria-label') + ", opção selecionada: " + selectedOption.text; // Define o texto da fala
-    } else if (ElementoFocado.classList.contains('container-btn-toggle')) { // Se o elemento focado for um botão de alternância
-        const switchElement = ElementoFocado.querySelector('#switch'); // Procura o switch dentro do botão
-        speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado"; // Define o texto da fala
+        });
+        speech.text = LerCodigoDetalhado(codeEditor.getValue()); // Lê o código detalhadamente
+    } else if (ElementoFocado.tagName === 'A') {
+        const img = ElementoFocado.querySelector('img');
+        speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Lê o texto do link ou a descrição da imagem
+    } else if (ElementoFocado.tagName === 'BUTTON') {
+        speech.text = ElementoFocado.getAttribute('aria-label') || "Botão: " + ElementoFocado.textContent; // Lê o texto do botão
+    } else if (ElementoFocado.tagName === 'SELECT') {
+        const selectedOption = ElementoFocado.options[ElementoFocado.selectedIndex];
+        speech.text = ElementoFocado.getAttribute('aria-label') + ", opção selecionada: " + selectedOption.text; // Lê a opção selecionada no select
+    } else if (ElementoFocado.classList.contains('container-btn-toggle')) {
+        const switchElement = ElementoFocado.querySelector('#switch');
+        speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado"; // Lê o estado do tema
     } else {
-        speech.text = ElementoFocado.textContent; // Define o texto da fala para o conteúdo do elemento focado
+        speech.text = ElementoFocado.textContent; // Lê o texto do elemento focado
     }
 
-    console.log(`Lendo: ${speech.text}`); // mostra o texto que será lido no console do navegador
+    console.log(`Lendo: ${speech.text}`); // Loga o texto que será lido
     configureUtterance(speech); // Configura os parâmetros da fala
     Iniciar_Leitura(speech); // Inicia a leitura
-}
-
-// Função para ler uma mensagem ao entrar no campo de código
-function Ler_CampoCodigoFocado() {
-    console.log("Focado no campo de código"); // mostra o texto que será lido no console do navegador
-    const speech = new SpeechSynthesisUtterance("Você está no campo de entrada para digitar o código."); // Cria um objeto de síntese de fala com a mensagem
-    configureUtterance(speech); // Configura os parâmetros da fala
-    Iniciar_Leitura(speech); // Inicia a leitura
-}
-
-// Função para ler a última palavra ao pressionar espaço
-function Ler_UltimaPalavra(event) {
-    if (event.key === ' ') { // Detecta se a tecla pressionada é espaço
-        const texto = document.getElementById('code').innerText.trim(); // Obtém o texto do div e remove espaços em branco
-        const palavras = texto.split(/\s+/); // Divide o texto em palavras
-        const ultimaPalavra = palavras[palavras.length - 1]; // Obtém a última palavra
-
-        const speech = new SpeechSynthesisUtterance(`Palavra digitada: ${ultimaPalavra}`); // Cria um objeto de síntese de fala com a última palavra
-        configureUtterance(speech); // Configura os parâmetros da fala
-        Iniciar_Leitura(speech); // Inicia a leitura
-        console.log(`Última palavra: ${ultimaPalavra}`); // mostra o texto que será lido no console do navegador
-    }
 }
 
 // Event listener para ler elementos focados ao pressionar Tab
-document.addEventListener('focusin', Ler_Elementos); // Adiciona um listener para o evento de foco
+document.addEventListener('focusin', Ler_Elementos);
 
-// Configura eventos específicos para o campo de código
-const codeField = document.getElementById('code'); // Obtém o campo de código
-codeField.addEventListener('focus', Ler_CampoCodigoFocado); // Lê ao focar no campo
-codeField.addEventListener('keydown', Ler_UltimaPalavra); // Lê a última palavra ao pressionar espaço
+const codeField = document.getElementById('code');
+codeField.addEventListener('focus', Ler_Elementos); // Adiciona o listener de foco ao campo de código
 
-// Para simular a digitação no campo de código
-codeField.addEventListener('keydown', (event) => {
-    // A cada tecla pressionada, você pode ler o que está sendo digitado, se necessário
-    const textoAtual = codeField.innerText; // Obtém o texto atual
-    const speech = new SpeechSynthesisUtterance(`${textoAtual}`);
-    configureUtterance(speech);
-    Iniciar_Leitura(speech);
-});
+//(FIZ ESSAS ANOTAÇÕES ABAIXO PRA MIM NÃO ESQUECER ONDE PAREI KKKK)
+// - add a navegação por setas e espaço para ler quando o user add um codigo 
+// - fazer com que o leitor de tela leia o codigo pausando linha por linha, sem que fique uma leitra continua sem pausa.
