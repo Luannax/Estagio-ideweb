@@ -1,13 +1,101 @@
+// Reconhecimento de voz
+navigator.mediaDevices.enumerateDevices().then(function(devices) {
+    devices.forEach(function(device) {
+        console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+    });
+}).catch(function(err) {
+    console.error("Erro ao enumerar dispositivos:", err.message);
+});
+
+
+// Função para iniciar o reconhecimento de voz
+function iniciarReconhecimentoVoz() {
+    if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+        alert('API de reconhecimento de voz não suportada neste navegador.');
+        return;
+    }
+
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const reconhecimento = new Recognition();
+    reconhecimento.lang = 'pt-BR';
+    reconhecimento.interimResults = true; // Mostra resultados parciais para debugging
+    reconhecimento.maxAlternatives = 1;
+    reconhecimento.continuous = false;
+
+    // Processamento dos comandos
+    reconhecimento.onresult = function(event) {
+        const comando = event.results[0][0].transcript.toLowerCase();
+        console.log('Comando reconhecido:', comando);
+
+        if (comando.includes('salvar')) {
+            const btnSalvar = document.querySelector('.btn-salvar');
+            if (btnSalvar) {
+                btnSalvar.click();
+            } else {
+                console.error('Elemento btnSalvar não encontrado.');
+            }
+
+        } else if (comando.includes('compartilhar')) {
+            const btnCompartilhar = document.querySelector('.btn-compartilhar');
+            if (btnCompartilhar) {
+            btnCompartilhar.click();
+            } else {
+            console.error('Elemento btn-compartilhar não encontrado.');
+            }
+
+        } else if (comando.includes('abrir')) {
+            document.getElementById('file-input').click();
+        } else {
+            alert('Comando não reconhecido.');
+        }
+    };
+
+    // Tratamento de erros
+    reconhecimento.onerror = function(event) {
+        console.error('Erro no reconhecimento de voz:', event.error);
+        if (event.error === 'no-speech') {
+            alert('Nenhum som detectado. Por favor, tente novamente em um ambiente silencioso.');
+        } else if (event.error === 'audio-capture') {
+            alert('Nenhum dispositivo de áudio detectado. Verifique o microfone.');
+        } else if (event.error === 'not-allowed') {
+            alert('Permissão negada. Habilite o uso do microfone no navegador.');
+        } else {
+            alert('Erro desconhecido: ' + event.error);
+        }
+    };
+
+    // Inicia o reconhecimento
+    reconhecimento.start();
+    console.log('Reconhecimento de voz iniciado...');
+}
+
+// Adiciona um ouvinte de evento ao botão de reconhecimento de voz
+document.querySelector('.btn-reconhecimento').addEventListener('click', iniciarReconhecimentoVoz);
+    // Verifica as permissões do microfone
+    navigator.permissions.query({ name: 'microphone' }).then(function(permissionStatus) {
+        console.log('Permissão para microfone:', permissionStatus.state);
+        if (permissionStatus.state === 'denied') {
+            alert('A permissão para o microfone foi negada. Habilite-a nas configurações do navegador.');
+            return;
+        } else {
+            // Inicia o reconhecimento
+            reconhecimento.start();
+            console.log('Reconhecimento de voz iniciado...');
+        }
+    });
+
+// ------------------------------------------------------------------------------------------------------------------------
+
+
+
+// Interação do usuário com o mouse.
 // Função para salvar o código em um arquivo
 function salvarCodigo() {
-    // Obtém o código do pre
+    // Obtém o código do editor ACE
     var codigo = ace.edit("code").getValue();
-    
-    //document.getElementById('code').value;
-    
 
     // Cria um novo Blob com o código
-    var blob = new Blob([codigo], {type: "text/plain;charset=utf-8"});
+    var blob = new Blob([codigo], { type: "text/plain;charset=utf-8" });
 
     // Cria uma URL para o Blob
     var url = URL.createObjectURL(blob);
@@ -17,8 +105,11 @@ function salvarCodigo() {
     link.download = 'codigo.' + (linguagemAtual === 'Python' ? 'py' : 'js');
     link.href = url;
 
-    // Simula um no link de download
+    // Simula um clique no link de download
     link.click();
+
+    // Limpa a URL para evitar vazamento de memória
+    URL.revokeObjectURL(url);
 }
 
 // Adiciona um ouvinte de evento ao botão de salvar
@@ -61,8 +152,9 @@ document.querySelector('.btn-abrir').addEventListener('click', function() {
 
 // Função para compartilhar o código
 function compartilharCodigo() {
-    // Obtém o código do pre
-    var codigo = document.getElementById('code').value = texto;
+    // Obtém o código do editor ACE
+    var editor = ace.edit("code");
+    var codigo = editor.getValue();
 
     // Cria um novo URLSearchParams
     var params = new URLSearchParams();
