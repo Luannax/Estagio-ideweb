@@ -1,4 +1,8 @@
 //npm install express mysql bcrypt body-parser express-session crypto
+// Baixar xamp, sql e mysqlfront
+//https://www.mysql.com/downloads/
+//https://www.apachefriends.org/pt_br/download.html
+//https://mysql-front.softonic.com.br/
 
 const express = require("express"); //FRAMEWORK WEB
 const mysql = require("mysql"); //CONECTAR COM O BANCO DE DADOS
