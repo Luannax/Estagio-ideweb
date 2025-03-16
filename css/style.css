@@ -1,4 +1,4 @@
-
+/*Navbar*/
 .navbar{
   background-color: #d0d0d0;
 }
@@ -6,57 +6,43 @@
 .logo {
   margin-top: -10px;
 }
-.container-btnAcessSelect{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 50rem;
-}
 
+
+
+#chamarbtnUserVoz{
+  margin-right: 10px;
+}
+/*fim*/
+
+
+/*Input do codigo*/
 .input-algoritmo, .output-algoritmo  {
     position: relative;
-    width: 80rem;
-    height:20rem;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
     border-radius: 5px;
     border: 2px solid #727171;
 }
-
-.container-config{
-  margin-left: 20rem;
-  margin-top: 10rem;
+#code {
+  width: 100%;
+  height: 50vh; /* Ajustável */
+  min-height: 300px;
+  font-size: 14px;
 }
 
-.submenu-geral{
-  margin-bottom: 20rem;
+/*#code {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
-
-form {
-  max-width: 400px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-.form-label {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-pre{
-  height: 19.8rem;
-}
-
-/* Cor da quantidade de linha do input-algoritmo */
-div.ace_layer.ace_gutter-layer.ace_folding-enabled{
-  background-color: rgba(77, 74, 74, 0.472);
-}
-
-
+/*fim/
 
 /*footer*/
 .footer {
-    background-color: rgba(255, 255, 255, 0.902);
+    background-color: rgba(241, 241, 241, 0.902);
 }
 
 .footer p {
@@ -69,63 +55,4 @@ div.ace_layer.ace_gutter-layer.ace_folding-enabled{
     color: #007bff;
     text-decoration: none;
 }
-
-
-/*----------------------------------------------------------------*/
-
-/* CSS for Geral tab content */
-#geral .form-label {
-  font-weight: bold;
-}
-
-#geral .form-check-label {
-  margin-left: 10px;
-}
-
-#geral .btn {
-  margin-top: 20px;
-}
-
-#geral, #fala, #camera, #audio, #teclado, #mouse, #braille, #navegacao{
-  padding: 150px;
-  width: 70%;
-  margin: 0 auto;
-}
-
-/*<div id="settingsMessage" class="mt-3" style="display: none;">Configurações aplicadas com sucesso!</div>*/
-#settingsMessage {
-  display: none;
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #d4edda;
-  color: #155724;
-}
-#settingsMessage.show {
-  display: block;
-}
-#settingsMessage.close {
-  display: none;
-}
-#settingsMessage.close:hover {
-  cursor: pointer;
-}
-#settingsMessage.close::before {
-  content: "X";
-  float: right;
-  font-weight: bold;
-  color: #155724;
-}
-#settingsMessage::before {
-  font-weight: bold;
-  color: #155724;
-  /*centralizar*/
-  display: block;
-  margin: 0 auto;
-  width: 50%;
-  text-align: center;
-}
-
-#chamarbtnUserVoz{
-  margin-right: 10px;
-}
+/*fim*/
