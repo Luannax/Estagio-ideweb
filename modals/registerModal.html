@@ -1,0 +1,44 @@
+<!-- Modal de Registro -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">
+                    <i class="bi bi-person-plus-fill"></i> Registrar no SIGAA
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <img src="img/sigaa.png" alt="SIGAA Logo" class="img-fluid rounded" style="width: 100px; height: auto;">
+                </div>
+                <form id="form_registar_user">
+                    <div class="mb-3 col-12">
+                        <label for="nome_registro" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome_registro" placeholder="Digite o seu nome" required>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label for="email_registro" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_registro" placeholder="Digite seu email" required>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label for="matricula_registro" class="form-label">Matrícula</label>
+                        <input type="text" class="form-control" id="matricula_registro" placeholder="Digite sua Matrícula do sigaa" required>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label for="senha_registro" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha_registro" placeholder="Digite sua senha" required>
+                    </div>
+                    <span id="resultado" class="pull-right"></span>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fa fa-save"></i> Registrar
+                        </button>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/bd/script.js"></script>
