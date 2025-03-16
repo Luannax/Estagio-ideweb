@@ -1,3 +1,5 @@
+//npm install express mysql bcrypt body-parser express-session crypto
+
 const express = require("express"); //FRAMEWORK WEB
 const mysql = require("mysql"); //CONECTAR COM O BANCO DE DADOS
 const bcrypt = require("bcrypt"); //CRIPTOGRAFAR SENHA
