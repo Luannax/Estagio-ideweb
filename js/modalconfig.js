@@ -36,46 +36,32 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Erro ao carregar vozes:", error));
 
 
-    $(document).on('submit', '#form_menuGeral_cadastrar', function (event) {
-        const iniciarLeitor = document.getElementById("iniciar_leitor").value;
-            const idioma = document.getElementById("languageSelect").value;
+    $(document).on('submit', '#form_config', function (event) {
+        event.preventDefault();
+        var iniciar_leitor = $('#form_config #iniciar_leitor').val();
+        var languageSelect_id = $('#form_config #languageSelect').val();
+        var languageSelect_nome = $('#form_config #languageSelect option:selected').text();
+        var voiceSelect_id = $('#form_config #voiceSelect').val();
+        var voiceSelect_nome = $('#form_config #voiceSelect option:selected').text();
+        var velocidade = $('#form_config #velocidade').val();
 
-            // Pega o ID e nome do usuário logado via uma requisição GET
-            fetch("/usuarioLogado")
-                .then(response => response.json())
-                .then(userData => {
-                    if (userData.STATUS === "ERROR") {
-                        alert("Erro: " + userData.MSG);
-                    } else {
-                        const userId = userData.userId;
-                        const userName = userData.userName;
-
-                        // Agora faz a requisição para salvar a configuração
-                        fetch("/salvarConfiguracao", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ 
-                                iniciar_leitor: iniciarLeitor, 
-                                idioma: idioma,
-                                user_id: userId,       // Envia o userId
-                                user_name: userName    // Envia o userName
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.STATUS === "OK") {
-                                alert("Configurações salvas com sucesso!");
-                            } else {
-                                alert("Erro: " + data.MSG);
-                            }
-                        })
-                        .catch(error => console.error("Erro ao salvar:", error));
-                    }
-                })
-                .catch(error => {
-                    console.error("Erro ao obter dados do usuário:", error);
-                    alert("Erro ao obter dados do usuário.");
-                });
+        console.log({
+            iniciar_leitor,
+            languageSelect_id,
+            languageSelect_nome,
+            voiceSelect_id,
+            voiceSelect_nome,
+            velocidade
         });
 
+        $.post('/salvarConfiguracoes', { iniciar_leitor, languageSelect_id, languageSelect_nome, voiceSelect_id, voiceSelect_nome, velocidade })
+            .done(function (response) {
+                alert('Configurações salvas com sucesso!');
+                console.log("Configurações salvas com sucesso:", response);
+            })
+            .fail(function (error) {
+                alert('Erro ao salvar configurações')
+                console.error("Erro ao salvar configurações:", error);
+            });
+    });
 });
