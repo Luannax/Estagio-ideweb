@@ -1,4 +1,4 @@
-//npm install express mysql bcrypt body-parser express-session crypto
+//npm install express mysql bcrypt body-parser express-session crypto firebase-admin
 // Baixar xamp, sql e mysqlfront
 //https://www.mysql.com/downloads/
 //https://www.apachefriends.org/pt_br/download.html
@@ -42,7 +42,7 @@ db.connect((err) => {
   if (err) {
     console.error("Erro ao conectar ao MySQL:", err);
   } else {
-    console.log("Conectado ao MySQL! Na porta 3307");
+    console.log("Conectado ao MySQL! Na porta 3325");
   }
 });
 
