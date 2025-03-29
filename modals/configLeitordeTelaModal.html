@@ -3,24 +3,24 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalConfigLabel">Configurações do Leitor de Tela</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <h5 class="modal-title" id="modalConfigLabel" tabindex="1">Configurações do Leitor de Tela</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar" tabindex="2" alt="Botão fechar"></button>
             </div>
             <div class="modal-body">
                 <!-- Configurações -->
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" alt="Menu de configurações, Geral, Fala, Câmera, Áudio e Braille">
                     <!-- Geral -->
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-geral-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-geral" type="button" role="tab" aria-controls="pills-geral"
-                            aria-selected="true">
+                            aria-selected="true" tabindex="3" alt="Menu geral">
                             <i class="bi bi-sliders2"></i> Geral
                         </button>
                     </li>
                     <!-- Fala -->
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-fala-tab" data-bs-toggle="pill" data-bs-target="#pills-fala"
-                            type="button" role="tab" aria-controls="pills-fala" aria-selected="false">
+                            type="button" role="tab" aria-controls="pills-fala" aria-selected="false" alt="Menu fala" tabindex="8">
                             <i class="bi bi-mic-fill"></i> Fala
                         </button>
                     </li>
@@ -28,7 +28,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-camera-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-camera" type="button" role="tab" aria-controls="pills-camera"
-                            aria-selected="false">
+                            aria-selected="false" tabindex="13" alt="Menu câmera">
                             <i class="bi bi-webcam-fill"></i> Câmera
                         </button>
                     </li>
@@ -36,7 +36,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-audio-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-audio" type="button" role="tab" aria-controls="pills-audio"
-                            aria-selected="false">
+                            aria-selected="false" tabindex="16" alt="Menu áudio">
                             <i class="bi bi-volume-up-fill"></i> Áudio
                         </button>
                     </li>
@@ -44,7 +44,7 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-braille-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-braille" type="button" role="tab" aria-controls="pills-braille"
-                            aria-selected="false">
+                            aria-selected="false" tabindex="19" alt="Menu braille">
                             <i class="bi bi-keyboard"></i> Braille
                         </button>
                     </li>
@@ -58,17 +58,17 @@
                         <div class="tab-pane fade show active" id="pills-geral" role="tabpanel"
                             aria-labelledby="pills-geral-tab">
                             <div class="mb-3">
-                                <label class="form-check-label" for="startNLeitor">
+                                <label class="form-check-label" for="startNLeitor" tabindex="4" alt="Iniciar o Leitor quando abrir a página ?">
                                     Iniciar o Leitor quando abrir a página
                                 </label>
-                                <select id="iniciar_leitor" name="iniciar_leitor" class="form-select">
+                                <select id="iniciar_leitor" name="iniciar_leitor" class="form-select" tabindex="5" alt="select com opções sim e não">
                                     <option value="S">Sim</option>
                                     <option value="N">Não</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="languageSelect" class="form-label">Selecionar o idioma</label>
-                                <select class="form-select" id="languageSelect">
+                                <label for="languageSelect" class="form-label" tabindex="6" alt="Selecionar idioma">Selecionar o idioma</label>
+                                <select class="form-select" id="languageSelect" name="languageSelect" tabindex="7" alt="select com opções de idiomas">
                                     <!--Pega do banco de dados para listar-->
                                 </select>
                             </div>
@@ -77,29 +77,29 @@
                         <!--MENU FALA-->
                         <div class="tab-pane fade" id="pills-fala" role="tabpanel" aria-labelledby="pills-fala-tab">
                             <div class="mb-3">
-                                <label for="voiceSelect" class="form-label">Selecionar sintetizador de voz</label>
-                                <select class="form-select" id="voiceSelect">
+                                <label for="voiceSelect" class="form-label" tabindex="9" alt="Selecionar uma voz para o leitor de tela">Selecionar sintetizador de voz</label>
+                                <select class="form-select" id="voiceSelect" tabindex="10" alt="select com opções de vozes">
                                     <!--Pega do banco de dados para listar-->
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="voiceSpeed" class="form-label">Velocidade da voz</label>
+                                <label for="voiceSpeed" class="form-label" tabindex="11" alt="Selecione a velocidade voz">Velocidade da voz</label>
                                 <input type="range" class="form-range" id="velocidade" min="0.5" max="2" step="0.1"
-                                    value="1">
+                                    value="1" tabindex="12" alt="use as setas do seu teclado para aumentar ou diminuir a velocidade da voz">
                             </div>
                         </div>
 
                         <!-- Câmera -->
                         <div class="tab-pane fade" id="pills-camera" role="tabpanel" aria-labelledby="pills-camera-tab">
-                            <div class="mb-3">
-                                <h4>em desenvolvimento ... </h4>
+                            <div class="mb-3" tabindex="14">
+                                <h4 tabindex="15">em desenvolvimento ... </h4>
                             </div>
                         </div>
 
                         <!-- Áudio -->
                         <div class="tab-pane fade" id="pills-audio" role="tabpanel" aria-labelledby="pills-audio-tab">
-                            <div class="mb-3">
-                                <h4>
+                            <div class="mb-3" tabindex="17">
+                                <h4 tabindex="18">
                                     em desenvolvimento ...
                                 </h4>
                             </div>
@@ -108,14 +108,14 @@
                         <!-- Braille -->
                         <div class="tab-pane fade" id="pills-braille" role="tabpanel"
                             aria-labelledby="pills-braille-tab">
-                            <h4>
+                            <h4 tabindex="20">
                                 Não foi implementado por falta de orçamento.
                             </h4>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" form="form_config"><i class="fas fa-save"></i>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" tabindex="22" alt="Botão fechar">Fechar</button>
+                        <button type="submit" class="btn btn-primary" form="form_config" tabindex="21" alt="Botão aplicar"><i class="fas fa-save"></i>
                             Aplicar</button>
                     </div>
                 </form>
@@ -125,3 +125,51 @@
 </div>
 
 <script src="/js/modalconfig.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabButtons = document.querySelectorAll('#pills-tab button');
+        const tabContents = document.querySelectorAll('.tab-pane');
+
+        tabButtons.forEach((button, index) => {
+            button.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    // Ativa a aba correspondente
+                    const targetId = button.getAttribute('data-bs-target');
+                    const targetContent = document.querySelector(targetId);
+
+                    // Remove a classe 'active' de todas as abas e conteúdos
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('show', 'active'));
+
+                    // Adiciona a classe 'active' na aba e conteúdo selecionados
+                    button.classList.add('active');
+                    targetContent.classList.add('show', 'active');
+
+                    // Move o foco para o primeiro elemento do conteúdo
+                    const focusableElements = targetContent.querySelectorAll('input, select, button, textarea, a, [tabindex]:not([tabindex="-1"])');
+                    if (focusableElements.length > 0) {
+                        focusableElements[0].focus();
+                    }
+
+                    event.preventDefault();
+                }
+            });
+        }); 
+
+        // Retorna o foco ao menu ao pressionar Shift + Tab no primeiro elemento do conteúdo
+        tabContents.forEach(content => {
+            const focusableElements = content.querySelectorAll('input, select, button, textarea, a, [tabindex]:not([tabindex="-1"])');
+            if (focusableElements.length > 0) {
+                focusableElements[0].addEventListener('keydown', (event) => {
+                    if (event.key === 'Tab' && event.shiftKey) {
+                        const activeTab = document.querySelector('#pills-tab .nav-link.active');
+                        if (activeTab) {
+                            activeTab.focus();
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
