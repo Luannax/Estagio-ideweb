@@ -25,17 +25,17 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname)); // DIRETÓRIO RAIZ
 
 // Configuração do banco de dados MySQL
 const db = mysql.createConnection({
-  host: "localhost", 
+  host: "localhost",
   user: "root",
   password: "",
   database: "ideweb", // NOME DO BANCO DE DADOS
-  port: 3307, // PORTA DO MYSQL
+  port: 3325, // PORTA DO MYSQL
 });
 
 db.connect((err) => {
@@ -48,36 +48,36 @@ db.connect((err) => {
 
 // Rota de cadastro
 app.post('/cadastrar', (req, res) => {
-    const { nome, email, matricula, senha } = req.body;
+  const { nome, email, matricula, senha } = req.body;
 
-    if (!nome || !email || !matricula || !senha) {
-      return res.json({ STATUS: 'ERROR', MSG: 'Todos os campos são obrigatórios.' });
+  if (!nome || !email || !matricula || !senha) {
+    return res.json({ STATUS: 'ERROR', MSG: 'Todos os campos são obrigatórios.' });
+  }
+
+  db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      return res.json({ STATUS: 'ERROR', MSG: 'Erro ao verificar o e-mail.' });
     }
 
-    db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
+    if (results.length > 0) {
+      return res.json({ STATUS: 'ERROR', MSG: 'Este e-mail já está cadastrado.' });
+    }
+
+    bcrypt.hash(senha, 10, (err, hash) => {
       if (err) {
-        return res.json({ STATUS: 'ERROR', MSG: 'Erro ao verificar o e-mail.' });
+        return res.json({ STATUS: 'ERROR', MSG: 'Erro ao criptografar a senha.' });
       }
 
-      if (results.length > 0) {
-        return res.json({ STATUS: 'ERROR', MSG: 'Este e-mail já está cadastrado.' });
-      }
-
-      bcrypt.hash(senha, 10, (err, hash) => {
+      const query = 'INSERT INTO usuarios (matricula, senha, nome, email) VALUES (?, ?, ?, ?)';
+      db.query(query, [matricula, hash, nome, email], (err, result) => {
         if (err) {
-          return res.json({ STATUS: 'ERROR', MSG: 'Erro ao criptografar a senha.' });
+          return res.json({ STATUS: 'ERROR', MSG: 'Erro ao cadastrar o usuário.' });
         }
 
-        const query = 'INSERT INTO usuarios (matricula, senha, nome, email) VALUES (?, ?, ?, ?)';
-        db.query(query, [matricula, hash, nome, email], (err, result) => {
-          if (err) {
-            return res.json({ STATUS: 'ERROR', MSG: 'Erro ao cadastrar o usuário.' });
-          }
-
-          res.json({ STATUS: 'OK', MSG: 'Usuário registrado com sucesso.' });
-        });
+        res.json({ STATUS: 'OK', MSG: 'Usuário registrado com sucesso.' });
       });
     });
+  });
 });
 
 // Rota de login
@@ -138,20 +138,12 @@ app.get("/getVozes", (req, res) => {
 });
 
 // Salvar configurações
-app.post("/salvarConfiguracao", (req, res) => {
-  const { iniciar_leitor, idioma, user_id, user_name } = req.body;
+app.post("/salvarConfiguracoes", (req, res) => {
+  const { iniciar_leitor, languageSelect_id, languageSelect_nome, voiceSelect_id, voiceSelect_nome, velocidade } = req.body;
 
-  if (!iniciar_leitor || !idioma || !user_id || !user_name) {
-    return res.status(400).json({ STATUS: "ERROR", MSG: "Todos os campos são obrigatórios." });
-  }
+  const sql = `INSERT INTO config (iniciar_leitor, idioma_id, idioma_nome, voz_id, voz_nome, velocidade) VALUES (?, ?, ?, ?, ?, ?)`;
 
-  const sql = `
-    INSERT INTO config (user_id, iniciar_leitor, idioma, user_name)
-    VALUES (?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE iniciar_leitor = VALUES(iniciar_leitor), idioma = VALUES(idioma), user_name = VALUES(user_name)
-  `;
-
-  db.query(sql, [user_id, iniciar_leitor, idioma, user_name], (err, result) => {
+  db.query(sql, [iniciar_leitor, languageSelect_id, languageSelect_nome, voiceSelect_id, voiceSelect_nome, velocidade], (err, result) => {
     if (err) {
       console.error("Erro ao salvar configuração:", err);
       return res.status(500).json({ STATUS: "ERROR", MSG: "Erro ao salvar configurações." });
