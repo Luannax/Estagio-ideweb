@@ -10,6 +10,34 @@ function configureUtterance(speech) {
 function Iniciar_Leitura(speech) {
     window.speechSynthesis.speak(speech); // Inicia a síntese de fala com o objeto speech
 }
+// Função para pausar a leitura
+function Pausar_Leitura() {
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+    }
+}
+
+// Função para retomar a leitura
+function Retomar_Leitura() {
+    if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+    }
+}
+
+// Função para cancelar a leitura
+function Cancelar_Leitura() {
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+    }
+}
+
+// Função para ler o nome do site
+function Ler_Nome_Site() {
+    const speech = new SpeechSynthesisUtterance();
+    speech.text = document.title; // Obtém o título do site
+    configureUtterance(speech);
+    Iniciar_Leitura(speech);
+}
 
 // Função para descrever cada caractere especial ou retornar a palavra diretamente
 function DescreverCaractereOuPalavra(texto) {
@@ -133,16 +161,10 @@ function Ler_Elementos() {
     } else if (ElementoFocado.tagName === 'A') {
         const img = ElementoFocado.querySelector('img');
         speech.text = img && img.alt ? "Ícone: " + img.alt : "Link: " + ElementoFocado.textContent; // Lê o texto do link ou a descrição da imagem
-    } else if (ElementoFocado.tagName === 'BUTTON') {
-        speech.text = ElementoFocado.getAttribute('aria-label') || "Botão: " + ElementoFocado.textContent; // Lê o texto do botão
-    } else if (ElementoFocado.tagName === 'SELECT') {
-        const selectedOption = ElementoFocado.options[ElementoFocado.selectedIndex];
-        speech.text = ElementoFocado.getAttribute('aria-label') + ", opção selecionada: " + selectedOption.text; // Lê a opção selecionada no select
-    } else if (ElementoFocado.classList.contains('container-btn-toggle')) {
-        const switchElement = ElementoFocado.querySelector('#switch');
-        speech.text = switchElement.checked ? "Tema escuro ativado" : "Tema claro ativado"; // Lê o estado do tema
-    }else if (ElementoFocado.id === "terminal"){
-        
+    } else if (ElementoFocado.hasAttribute('alt')) {
+        speech.text = ElementoFocado.getAttribute('alt'); // Lê o atributo alt de qualquer elemento que o possua
+    } else if (ElementoFocado.id === "terminal") {
+        //em andamento ...
     } else {
         speech.text = ElementoFocado.textContent; // Lê o texto do elemento focado
     } 
@@ -155,9 +177,52 @@ function Ler_Elementos() {
 // Event listener para ler elementos focados ao pressionar Tab
 document.addEventListener('focusin', Ler_Elementos);
 
+// Event listener para comandos de teclado
+document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+
+    switch (key) {
+        case 'l': // Lê o nome do site
+            Ler_Nome_Site();
+            break;
+        case 'p': // Pausa a leitura
+            Pausar_Leitura();
+            break;
+        case 'r': // Retoma a leitura
+            Retomar_Leitura();
+            break;
+        case 'tab': // Navega e lê o elemento focado
+            Ler_Elementos();
+            break;
+        default:
+            break;
+    }
+});
+
 const codeField = document.getElementById('code');
 codeField.addEventListener('focus', Ler_Elementos); // Adiciona o listener de foco ao campo de código
+
 
 //(FIZ ESSAS ANOTAÇÕES ABAIXO PRA MIM NÃO ESQUECER ONDE PAREI KKKK)
 // - add a navegação por setas e espaço para ler quando o user add um codigo 
 // - fazer com que o leitor de tela leia o codigo pausando linha por linha, sem que fique uma leitra continua sem pausa.
+
+
+// Função para ler o conteúdo digitado nos campos de input
+function LerInputDigitado(event) {
+    const input = event.target; // Obtém o campo de input onde o evento ocorreu
+    const speech = new SpeechSynthesisUtterance(); // Cria um novo objeto de síntese de fala
+
+    if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA') {
+        const textoDigitado = input.value; // Obtém o valor atual do input
+        speech.text = textoDigitado ? `Você digitou: ${textoDigitado}` : "Campo vazio"; // Lê o texto digitado ou informa que está vazio
+        configureUtterance(speech); // Configura os parâmetros da fala
+        Iniciar_Leitura(speech); // Inicia a leitura
+    }
+}
+
+// Adiciona o listener de entrada de texto para todos os inputs e textareas no modal
+const inputs = document.querySelectorAll('input, textarea');
+inputs.forEach(input => {
+    input.addEventListener('input', LerInputDigitado); // Lê o conteúdo digitado em tempo real
+});
