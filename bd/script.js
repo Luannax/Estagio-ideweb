@@ -1,11 +1,6 @@
 $(document).ready(function () {
     console.log("Script carregado");
 
-    // Remover backdrop manualmente ao fechar o modal
-    $('#registerModal').on('hidden.bs.modal', function () {
-        $('.modal-backdrop').remove();
-    });
-
     // CADASTRAR USUÁRIO
     $('#registerModal').on('shown.bs.modal', function () {
         $('#form_registar_user #nome_registro').focus().select();
@@ -38,6 +33,7 @@ $(document).ready(function () {
         });
     });
 
+   
     // Função para alternar a visibilidade dos botões de login e logout
     function toggleLoginButtons(isLoggedIn, userName) {
         if (isLoggedIn) {
@@ -51,10 +47,6 @@ $(document).ready(function () {
         }
     }
 
-    // Remover backdrop manualmente ao fechar o modal
-    $('#sigaaModal').on('hidden.bs.modal', function () {
-        $('.modal-backdrop').remove();
-    });
 
     // Verificar se o usuário está logado ao carregar a página
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -102,42 +94,13 @@ $(document).ready(function () {
         toggleLoginButtons(false);
         alert('Você saiu com sucesso!');
     });
+});
 
-    // Função para salvar as configurações do leitor de tela
-    function saveScreenReaderSettings(settings) {
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            const userId = localStorage.getItem('userId');
-            $.post('/saveSettings', { userId, settings }, function (response) {
-                if (response.STATUS === 'OK') {
-                    alert('Configurações salvas com sucesso!');
-                } else {
-                    alert(response.MSG);
-                }
-            }).fail(function () {
-                alert('Erro ao salvar configurações.');
-            });
-        } else {
-            alert('Você precisa estar logado para salvar as configurações.');
-        }
-    }
-
-    // Exemplo de uso da função saveScreenReaderSettings
-    $('#aplicarConfig').on('click', function () {
-        const settings = {
-            deviceType: $('#tipo').val(),
-            startReader: $('#iniciar_leitor').val(),
-            language: $('#languageSelect').val()
-        };
-        saveScreenReaderSettings(settings);
-    });
-
-    $('#applyVoiceSettings').on('click', function () {
-        const settings = {
-            voice: $('#voiceSelect').val(),
-            speed: $('#voiceSpeed').val(),
-            pitch: $('#voicePitch').val(),
-            volume: $('#voiceVolume').val()
-        };
-        saveScreenReaderSettings(settings);
+$(document).on('click', '#registerLink', function (event) {
+    event.preventDefault(); // Impede o comportamento padrão do link
+    $('#sigaaModal').modal('hide'); // Fecha o modal de login
+    $('#sigaaModal').on('hidden.bs.modal', function () {
+        $('#registerModal').modal('show'); // Abre o modal de registro
+        $(this).off('hidden.bs.modal'); // Remove o evento para evitar múltiplas execuções
     });
 });
