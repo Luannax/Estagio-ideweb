@@ -57,28 +57,47 @@
     <main class="container mt-3">
         <div class="row g-2">
             <div class="col-6 d-flex justify-content-start">
-                <button class="btn btn-outline-primary btn-icon ms-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
-                    <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
-                    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
-                </svg></button> <!--Salvar-->
-                <button class="btn btn-outline-primary btn-icon ms-2"><i class="bi bi-folder-fill"></i></button> <!--Abrir-->
+                <!-- Botão Salvar -->
+                <button class="btn btn-outline-primary btn-icon ms-2 btn-salvar" alt="Botão salvar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                        <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                        <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                    </svg>                
+                </button>
+            
+                <!-- Botão Abrir -->
+                <input type="file" id="file-input" style="display: none;"> <!-- Input para abrir arquivo -->
+                <button class="btn btn-outline-primary btn-icon ms-2 btn-abrir" onclick="document.getElementById('file-input').click();" alt="Botão abrir arquivo">
+                    <i class="bi bi-folder-fill"></i>
+                </button>
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <button class="btn btn-outline-primary btn-icon ms-2"><i class="bi bi-mic-fill"></i></button> <!--Voz-->
-                <button class="btn btn-primary btn-icon ms-2" data-bs-toggle="modal" data-bs-target="#modalAcessibilidade">
+                <!--Voz-->
+                <button class="btn btn-outline-primary btn-icon ms-2" alt="Botão voz">
+                    <i class="bi bi-mic-fill"></i>
+                </button> 
+
+                <!--Acessibilidade-->
+                <button class="btn btn-primary btn-icon ms-2" data-bs-toggle="modal" data-bs-target="#modalAcessibilidade" alt="Botão abrir configurações do leitor de tela">
                     <i class="bi bi-universal-access-circle"></i>
-                </button> <!--Acessibilidade-->
-                <select class="form-select w-auto ms-2">
+                </button> 
+
+                <!--Linguagem-->
+                <select class="form-select w-auto ms-2" alt="opções de linguagem">
                     <option>Python</option>
                     <option>...</option>
                 </select>
-                <button class="btn btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#sigaaModal" id="loginButton">
+
+                <!--Entrar-->
+                <button class="btn btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#sigaaModal" id="loginButton" alt="Botão para fazer login na ide">
                     <i class="bi bi-box-arrow-in-right"></i> Entrar
-                </button> <!--Entrar-->
+                </button> 
+
+                <!--Sair-->
                 <div id="userInfo" class="d-none">
-                    <button type="button" class="btn btn-outline-danger btn-icon" id="logoutButton">
+                    <button type="button" class="btn btn-outline-danger btn-icon" id="logoutButton" alt="Botão sair do login da ide">
                         <i class="bi bi-box-arrow-right"></i> Sair
-                    </button> <!--Sair-->
+                    </button> 
                 </div>
             </div>
         </div>        
@@ -87,7 +106,8 @@
         <div class="row mt-3">
             <div class="col-12">
                 <div class="input-algoritmo">
-                    <div id="code" name="code" class="form-control" tabindex="0" role="textbox"></div>
+                    <div id="code" name="code" class="form-control" tabindex="0" role="textbox" alt="Área de digitação do algoritmo">
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,8 +129,11 @@
         <!--Botão para executar o algoritmo-->
         <div class="row mt-3">
             <div class="col-12 d-flex">
-                <button class="btn btn-success me-2"><i class="bi bi-play-fill"></i> Run</button>
-                <button class="btn btn-dark"><i class="bi bi-share-fill"></i> Compartilhar</button>
+                <button class="btn btn-success me-2" alt="Botão executar código"><i class="bi bi-play-fill"></i> Run</button>
+                <!-- Botão Compartilhar -->
+                <button class="btn btn-dark btn-compartilhar" alt="Botão compartilhar código">
+                    <i class="bi bi-share-fill"></i> Compartilhar
+                </button>
             </div>
         </div>
 
@@ -120,7 +143,7 @@
                 <div class="d-flex justify-content-center output-algoritmo mt-3">
                     <!--@ApN-Jonas-->
                     <!--No terminal eu tive que colocar pre, mas se não der certo vc pode mudar para textarea-->
-                    <textarea id="terminal" name="terminal" class="form-control " rows="10" readonly></textarea>
+                    <textarea id="terminal" name="terminal" class="form-control " rows="10" readonly  alt="Terminal"></textarea>
                 </div>
             </div>
         </div>
@@ -131,13 +154,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="d-flex justify-content-center">
-                        <p>Desenvolvido por
+                    <div class="d-flex justify-content-center text-center flex-wrap">
+                        <p class="mb-0">Desenvolvido por
                             <a href="https://github.com/Luannax" target="_blank">Luanna Bahia</a>,
                             <a href="https://github.com/ApN-Jonas" target="_blank">Jonas Dantas</a>,
                             <a href="https://github.com/Elismara04" target="_blank">Elismara Rodrigues</a> e
                             <a href="https://github.com/PedroHenrBarreto" target="_blank">Pedro Henrique</a>
-                            © 2024 - Mato Grosso
+                            © 2025 - Mato Grosso
                         </p>
                     </div>
                 </div>
@@ -167,6 +190,15 @@
         loadModal('registerModal', './modals/registerModal.html');
         loadModal('modalConfig', './modals/configLeitordeTelaModal.html');
         loadModal('modalAcessibilidade', './modals/btnacessibilidadeModal.html');
+
+        // Remover backdrop dos modais
+        document.addEventListener('hidden.bs.modal', function (event) {
+            const openModals = document.querySelectorAll('.modal.show');
+            if (openModals.length === 0) {
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+            }
+        });
     </script>
 </body>
 </html>
