@@ -22,49 +22,155 @@ function iniciarReconhecimentoVoz() {
     reconhecimento.maxAlternatives = 1;
     reconhecimento.continuous = false;
 
-
     // Processamento dos comandos
     reconhecimento.onresult = function(event) {
         const comando = event.results[0][0].transcript.toLowerCase();
         console.log('Comando reconhecido:', comando);
         if (!event.results[0].isFinal) {
             return; // Ignora resultados parciais
-    }
+        }
+    
+    // Comando de botões
+    if (comando.includes('salvar')) {
+        const btnSalvar = document.querySelector('.btn-salvar');
+        if (btnSalvar) {
+            btnSalvar.click();
+            return;
+        } else {
+            console.error('Elemento btnSalvar não encontrado.');
+        }
 
-        if (comando.includes('salvar')) {
-            const btnSalvar = document.querySelector('.btn-salvar');
-            if (btnSalvar) {
-                btnSalvar.click();
-                return;
-            } else {
-                console.error('Elemento btnSalvar não encontrado.');
-            }
-
-        } else if (comando.includes('compartilhar')) {
+    }if (comando.includes('compartilhar')) {
             const btnCompartilhar = document.querySelector('.btn-compartilhar');
             if (btnCompartilhar) {
-            btnCompartilhar.click();
+                btnCompartilhar.click();
                 return;
             } else {
-            console.error('Elemento btn-compartilhar não encontrado.');
+                console.error('Elemento btn-compartilhar não encontrado.');
             }
 
         }else if (comando.includes('executar')){
             const btnsuccess = document.querySelector('.btn-success');
-        if (btnsuccess) {
+            if (btnsuccess){
             btnsuccess.click();
-        } else {
-            console.error('Elemento btnsuccess não encontrado. ');
-        }
+            return;
+            } else {
+            console.error('Elemento btn-success não encontrado. ');
+            }
 
         } else if (comando.includes('abrir')) {
             document.getElementById('file-input').click();
             return;
-        }else{
-            alert('Comando não reconhecido.');
         }
-    };
+    
 
+// Comando de copiar
+    if (comando.includes('copiar')) {
+        const editor = ace.edit("code");
+        const selecionado = editor.getSelectedText();
+        if (selecionado) {
+            navigator.clipboard.writeText(selecionado).then(() => {
+                var fala = new SpeechSynthesisUtterance("Texto copiado para a área de transferência.");
+                speechSynthesis.speak(fala);
+            });
+        } else {
+            alert("Nenhum texto selecionado para copiar.");
+        }
+        return;
+    }
+
+    // Comando de colar
+    if (comando.includes('colar')) {
+        navigator.clipboard.readText().then(texto => {
+            const editor = ace.edit("code");
+            editor.session.replace(editor.getSelectionRange(), texto);
+        });
+        return;
+    }
+
+    // Comando de excluir
+    if (comando.includes('excluir')) {
+        const editor = ace.edit("code");
+        if (editor.getSelectedText()) {
+            editor.session.replace(editor.getSelectionRange(), '');
+        } else {
+            alert("Nenhum texto selecionado para excluir.");
+        }
+        return;
+    }
+
+    //Comando para selecionar de um ponto a outro, exemplo: "selecionar linha 2 a 4"
+    const regexSelecionar = /selecionar linha (\d+) a (\d+)/;
+    const matchSelecionar = comando.match(regexSelecionar);
+    if (matchSelecionar) {
+        const linhaInicio = parseInt(matchSelecionar[1], 10) - 1; // ACE começa do 0
+        const linhaFim = parseInt(matchSelecionar[2], 10) - 1; // ACE começa do 0
+        const editor = ace.edit("code");
+        const session = editor.getSession();
+        const totalLinhas = session.getLength();
+        if (linhaInicio >= 0 && linhaFim < totalLinhas && linhaInicio <= linhaFim) {
+            const range = new ace.Range(linhaInicio, 0, linhaFim, session.getLine(linhaFim).length);
+            editor.selection.setRange(range);
+            var fala = new SpeechSynthesisUtterance(`Selecionando da linha ${linhaInicio + 1} à linha ${linhaFim + 1}.`);
+            speechSynthesis.speak(fala);
+        } else {
+            var fala = new SpeechSynthesisUtterance("Número de linha inválido.");
+            speechSynthesis.speak(fala);
+        }
+        return;
+    }
+
+    // Comando para selecionar todas as linhas
+    if (comando.includes('selecionar tudo')) {
+        const editor = ace.edit("code");
+        editor.selectAll();
+        var fala = new SpeechSynthesisUtterance("Todo o texto foi selecionado.");
+        speechSynthesis.speak(fala);
+        return;
+    }
+    // Comando para selecionar a linha atual
+    if (comando.includes('selecionar linha atual')) {
+        const editor = ace.edit("code");
+        const linhaAtual = editor.getCursorPosition().row;
+        const range = new ace.Range(linhaAtual, 0, linhaAtual, editor.getSession().getLine(linhaAtual).length);
+        editor.selection.setRange(range);
+        var fala = new SpeechSynthesisUtterance("A linha atual foi selecionada.");
+        speechSynthesis.speak(fala);
+        return;
+    }
+    // Comando para falar o texto selecionado
+    if (comando.includes('ler')) {
+        const editor = ace.edit("code");
+        const textoSelecionado = editor.getSelectedText();
+        if (textoSelecionado) {
+            var fala = new SpeechSynthesisUtterance(textoSelecionado);
+            speechSynthesis.speak(fala);
+        } else {
+            var fala = new SpeechSynthesisUtterance("Nenhum texto selecionado.");
+            speechSynthesis.speak(fala);
+        }
+        return;
+    }
+    // Comando para desfazer
+    if (comando.includes('desfazer')) {
+        const editor = ace.edit("code");
+        editor.undo();
+        var fala = new SpeechSynthesisUtterance("Desfazer a última ação.");
+        speechSynthesis.speak(fala);
+        return;
+    }
+    // Comando para refazer
+    if (comando.includes('refazer')) {
+        const editor = ace.edit("code");
+        editor.redo();
+        var fala = new SpeechSynthesisUtterance("Refazer a última ação.");
+        speechSynthesis.speak(fala);
+        return;
+    }
+    // Se o comando não for reconhecido
+    alert('Comando não reconhecido. Tente novamente.');
+    };
+    
     // Tratamento de erros
     reconhecimento.onerror = function(event) {
         console.error('Erro no reconhecimento de voz:', event.error);
@@ -82,89 +188,80 @@ function iniciarReconhecimentoVoz() {
     // Inicia o reconhecimento
     reconhecimento.start();
     console.log('Reconhecimento de voz iniciado...');
+    //compartilharCodigo();
 }
 
 // Adiciona um ouvinte de evento ao botão de reconhecimento de voz
 document.querySelector('.btn-reconhecimento').addEventListener('click', iniciarReconhecimentoVoz);
-    
-
     // Verifica as permissões do microfone
-    navigator.permissions.query({ name: 'microphone' }).then(function(permissionStatus) {
-        console.log('Permissão para microfone:', permissionStatus.state);
-        if (permissionStatus.state === 'denied') {
-            alert('A permissão para o microfone foi negada. Habilite-a nas configurações do navegador.');
-            return;
-        } else {
-            // Inicia o reconhecimento
-            reconhecimento.start();
-            console.log('Reconhecimento de voz iniciado...');
-        }
-    });
+    
 
 // ------------------------------------------------------------------------------------------------------------------------
 
-// Função para salvar o código em um arquivo
+
+
+//Função para salvar um código
 function salvarCodigo() {
-    //Fala a pergunta para o usuário
+    // Fala a pergunta para o usuário
     var fala = new SpeechSynthesisUtterance("Por favor, diga o nome do arquivo.");
     speechSynthesis.speak(fala);
-    
-    //Quando terminar de falar, inicia a gravação de voz
-    fala.onend = function(){
-        //Configura o reconhecimento de voz
+
+    // Quando terminar de falar, inicia a gravação de voz
+    fala.onend = function() {
+        // Configura o reconhecimento de voz
         var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
             alert("Seu navegador não suporta reconhecimento de voz.");
             return;
         }
-    
-    var reconhecimento = new SpeechRecognition();
-    reconhecimento.lang = 'pt-BR'; // Define para português
-    reconhecimento.interimResults = false; // Só resultados finais
-    reconhecimento.maxAlternatives = 1; // Apenas a melhor tentativa
 
-    // Inicia o reconhecimento
-    reconhecimento.start();
+        var reconhecimento = new SpeechRecognition();
+        reconhecimento.lang = 'pt-BR'; // Define para português
+        reconhecimento.interimResults = false; // Só resultados finais
+        reconhecimento.maxAlternatives = 1; // Apenas a melhor tentativa
 
-    // Quando capturar o resultado
-    reconhecimento.onresult = function(event) {
-        var nomeFalado = event.results[0][0].transcript.trim();
-        if (!nomeFalado) {
-            alert("Não foi possível entender o nome. Tente novamente.");
-            return;
-        }
+        // Inicia o reconhecimento
+        reconhecimento.start();
 
-        // Obtém o código do editor ACE
-        var codigo = ace.edit("code").getValue();
+        // Quando capturar o resultado
+        reconhecimento.onresult = function(event) {
+            var nomeFalado = event.results[0][0].transcript.trim();
+            if (!nomeFalado) {
+                alert("Não foi possível entender o nome. Tente novamente.");
+                return;
+            }
 
-        // Cria um novo Blob com o código
-        var blob = new Blob([codigo], { type: "text/plain;charset=utf-8" });
+            // Obtém o código do editor ACE
+            var codigo = ace.edit("code").getValue();
 
-        // Cria uma URL para o Blob
-        var url = URL.createObjectURL(blob);
+            // Cria um novo Blob com o código
+            var blob = new Blob([codigo], { type: "text/plain;charset=utf-8" });
 
-        // Cria um link de download para o Blob
-        var link = document.createElement('a');
-        link.download = nomeFalado + '.' + (linguagemAtual === 'Python' ? 'py' : 'js');
-        link.href = url;
+            // Cria uma URL para o Blob
+            var url = URL.createObjectURL(blob);
 
-        // Simula um clique no link de download
-        link.click();
+            // Cria um link de download para o Blob
+            var link = document.createElement('a');
+            link.download = nomeFalado + '.' + (linguagemAtual === 'Python' ? 'py' : 'js');
+            link.href = url;
 
-        // Limpa a URL para evitar vazamento de memória
-        URL.revokeObjectURL(url);
+            // Simula um clique no link de download
+            link.click();
+
+            // Limpa a URL para evitar vazamento de memória
+            URL.revokeObjectURL(url);
+        };
+
+        reconhecimento.onerror = function(event) {
+            alert("Erro no reconhecimento de voz: " + event.error);
+        };
     };
-
-    reconhecimento.onerror = function(event) {
-        alert("Erro no reconhecimento de voz: " + event.error);
-    };
-};
 }
 
 // Adiciona um ouvinte de evento ao botão de salvar
 document.querySelector('.btn-salvar').addEventListener('click', salvarCodigo);
 
-
+//------------------------------------------------------------------------------------------------------------------------------------
 
 // Função para abrir um arquivo
 function abrirArquivo(event) {
@@ -189,15 +286,10 @@ function abrirArquivo(event) {
     // Lê o arquivo como texto
     reader.readAsText(arquivo);
 }
-
 // Adiciona um ouvinte de evento ao elemento de entrada de arquivo
 document.getElementById('file-input').addEventListener('change', abrirArquivo);
 
-// Simula um clique no elemento de entrada de arquivo quando o botão Abrir arquivo é clicado
-//document.querySelector('.btn-abrir').addEventListener('click', function() {
-   // document.getElementById('file-input').click();
-//});
-
+//------------------------------------------------------------------------------------------------------------------------------
 
 // Função para compartilhar o código
 function compartilharCodigo() {
@@ -213,13 +305,14 @@ function compartilharCodigo() {
 
     // Cria uma nova URL com os parâmetros de consulta
     var url = window.location.origin + window.location.pathname + '?' + params.toString();
-    console.log("repetição");
+    console.log("repetiçao");
 
     // Copia a URL para a área de transferência
     navigator.clipboard.writeText(url).then(function() {
-        var fala = new SpeechSynthesisUtterance("Link copiado para a área de transferência.");
-    SpeechSynthesis.speak(fala);
+        var fala = new SpeechSynthesisUtterance("Link copiado com sucesso para a área de transferência.");
+    speechSynthesis.speak(fala);
     return;
+      //  alert('Link copiado para a área de transferência!');
     }, function() {
         alert('Falha ao copiar link!');
     });
@@ -228,25 +321,20 @@ function compartilharCodigo() {
 // Adiciona um ouvinte de evento ao botão de compartilhar
 document.querySelector('.btn-compartilhar').addEventListener('click', compartilharCodigo);
 
-//---------------------------------------------------------------------------------------------------//
-
-// Função para executar o código do editor
 function executar() {
-// Obtém o código digitado no editor ACE
     var editor = ace.edit("code");
     var codigo = editor.getValue();
 
     try {
-        // Executa o código diretamente no navegador
+        // Executa o código diretamente no navegador (somente JavaScript!)
         eval(codigo);
     } catch (erro) {
-        // Exibe mensagens de erro
         console.error("Erro ao executar o código:", erro);
         alert("Erro ao executar o código: " + erro.message);
     }
 }
 
-//Adiciona um ouvinte de evento ao botão de executar
+// Adiciona um ouvinte de evento ao botão de compartilhar
 document.querySelector('.btn-success').addEventListener('click', executar);
 
 
