@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de Expressões Faciais</title>
+    
+    <!-- Importação correta do Face-api.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; position: relative; }
+        video { width: 100%; max-width: 640px; }
+        .target-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border: 3px dashed red;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .container { position: relative; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>Centralize seu rosto</h1>
+    <div class="container">
+        <div class="target-box"></div>
+        <video id="video" autoplay></video>
+    </div>
+    <p id="message">Posicione seu rosto no centro da tela</p>
+    <p id="expression">Detectando expressão facial...</p>
+
+    <script>
+        let lastSpokenMessage = "";
+
+        async function setupCamera() {
+            const video = document.getElementById('video');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            return new Promise(resolve => video.onloadedmetadata = resolve);
+        }
+
+        async function loadModels() {
+            console.log("Carregando modelos...");
+            await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+            await faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+            console.log("Modelos carregados!");
+        }
+
+        function speak(message) {
+            if (message !== lastSpokenMessage && !speechSynthesis.speaking) {
+                lastSpokenMessage = message;
+                const utterance = new SpeechSynthesisUtterance(message);
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        async function detectFace() {
+            const video = document.getElementById('video');
+
+            async function detect() {
+                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
+
+                if (detections) {
+                    const faceBox = detections.detection.box;
+                    const faceCenterX = faceBox.x + faceBox.width / 2;
+                    const faceCenterY = faceBox.y + faceBox.height / 2;
+                    const centerX = video.videoWidth / 2;
+                    const centerY = video.videoHeight / 2;
+
+                    let message = 'Rosto centralizado!';
+                    if (faceCenterX < centerX - 50) message = 'Mova-se para a direita';
+                    else if (faceCenterX > centerX + 50) message = 'Mova-se para a esquerda';
+                    else if (faceCenterY < centerY - 50) message = 'Mova-se para baixo';
+                    else if (faceCenterY > centerY + 50) message = 'Mova-se para cima';
+
+                    document.getElementById('message').innerText = message;
+                    speak(message);
+
+                    // Detectar Expressões Faciais
+                    const expressions = detections.expressions;
+                    let expressionText = 'Expressão neutra. 😐';
+
+                    const maxExpression = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
+                    
+                    switch (maxExpression) {
+                        case 'happy': expressionText = 'Você está sorrindo! 😊'; break;
+                        case 'surprised': expressionText = 'Você está surpreso! 😮'; break;
+                        case 'sad': expressionText = 'Você parece triste! 😢'; break;
+                        case 'angry': expressionText = 'Você parece bravo! 😡'; break;
+                        case 'fearful': expressionText = 'Você parece assustado! 😱'; break;
+                        case 'disgusted': expressionText = 'Você parece enojado! 🤢'; break;
+                    }
+
+                    document.getElementById('expression').innerText = expressionText;
+                    speak(expressionText);
+                }
+
+                requestAnimationFrame(detect);
+            }
+
+            detect();
+        }
+
+        async function start() {
+            await setupCamera();
+            await loadModels();
+            detectFace();
+        }
+
+        start();
+    </script>
+</body>
+</html>
