@@ -1,0 +1,69 @@
+/*Navbar*/
+.navbar{
+  background-color: #d0d0d0;
+}
+
+.logo {
+  margin-top: -10px;
+}
+
+#chamarbtnUserVoz{
+  margin-right: 10px;
+}
+/*fim*/
+
+
+/*Input do codigo*/
+.input-algoritmo, .output-algoritmo  {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    border: 2px solid #727171;
+}
+/*#code {
+  width: 100%;
+  height: 50vh;  Ajustável 
+  min-height: 300px;
+  font-size: 14px;
+}*/
+
+#code {
+  position: absolute;
+  width: 100%;
+  height: 70vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+/*fim/
+
+/*footer*/
+.footer {
+    background-color: rgba(241, 241, 241, 0.902);
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+/*fim*/
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-icon i {
+  font-size: 1.2rem;
+}

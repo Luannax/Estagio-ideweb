@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconhecimento Facial Seguro</title>
+
+    <!-- face-api.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        video {
+            width: 100%;
+            max-width: 640px;
+        }
+
+        .target-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border: 3px dashed red;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #preview {
+            margin-top: 10px;
+            max-width: 300px;
+            display: none;
+            border: 2px solid #444;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Centralize seu rosto</h1>
+    <div class="container">
+        <div class="target-box"></div>
+        <video id="video" autoplay muted></video>
+    </div>
+    <p id="message">Posicione seu rosto no centro da tela</p>
+    <p id="expression">Detectando expressão facial...</p>
+    <img id="preview" alt="Imagem capturada" />
+
+    <script>
+        let lastSpokenMessage = "";
+        let detectando = true;
+        let jaCapturado = false;
+
+        function speak(message) {
+            if (message !== lastSpokenMessage && !speechSynthesis.speaking) {
+                lastSpokenMessage = message;
+                const utterance = new SpeechSynthesisUtterance(message);
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        async function setupCamera() {
+            const video = document.getElementById('video');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            return new Promise(resolve => video.onloadedmetadata = resolve);
+        }
+
+        async function loadModels() {
+            await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+            await faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+            await faceapi.nets.faceRecognitionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+            await faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights');
+        }
+
+        async function detectFace() {
+            const video = document.getElementById('video');
+            let contadorCentralizado = 0;
+
+            async function detect() {
+                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+                    .withFaceLandmarks()
+                    .withFaceDescriptor()
+                    .withFaceExpressions();
+
+                if (detections) {
+                    const box = detections.detection.box;
+                    const faceCenterX = box.x + box.width / 2;
+                    const faceCenterY = box.y + box.height / 2;
+                    const centerX = video.videoWidth / 2;
+                    const centerY = video.videoHeight / 2;
+
+                    let message = 'Rosto centralizado!';
+                    if (faceCenterX < centerX - 50) message = 'Mova-se para a direita';
+                    else if (faceCenterX > centerX + 50) message = 'Mova-se para a esquerda';
+                    else if (faceCenterY < centerY - 50) message = 'Mova-se para baixo';
+                    else if (faceCenterY > centerY + 50) message = 'Mova-se para cima';
+
+                    document.getElementById('message').innerText = message;
+                    speak(message);
+
+                    const expressions = detections.expressions;
+                    const maxExpression = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
+                    const textos = {
+                        happy: 'Você está sorrindo! 😊',
+                        surprised: 'Você está surpreso! 😮',
+                        sad: 'Você parece triste! 😢',
+                        angry: 'Você parece bravo! 😡',
+                        fearful: 'Você parece assustado! 😱',
+                        disgusted: 'Você parece enojado! 🤢',
+                        neutral: 'Expressão neutra. 😐'
+                    };
+                    const expressionText = textos[maxExpression] || 'Expressão neutra. 😐';
+                    document.getElementById('expression').innerText = expressionText;
+                    speak(expressionText);
+
+                    if (message === 'Rosto centralizado!') {
+                        contadorCentralizado++;
+                        if (contadorCentralizado >= 10 && !jaCapturado) {
+                            jaCapturado = true;
+                            detectando = false;
+                            await capturarEProcessar(detections.descriptor);
+                        }
+                    } else {
+                        contadorCentralizado = 0;
+                    }
+                }
+
+                if (detectando) requestAnimationFrame(detect);
+            }
+
+            detect();
+        }
+
+        async function capturarEProcessar(descriptorArray) {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const descriptor = Array.from(descriptorArray);
+
+            try {
+                const response = await fetch('http://localhost:5000/validar_descriptor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ descriptor })
+                });
+
+                const result = await response.json();
+
+                if (result.loginSucesso) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userName', result.nome);
+                    localStorage.setItem('userId', result.id); // supondo que o backend envie `id`
+
+                    speak(`Bem-vindo, ${result.nome}!`);
+                    document.getElementById('message').innerText = `Login realizado como: ${result.nome}`;
+                    window.location.href = '/index.html';
+                }else {
+                    speak("Usuário não reconhecido. Deseja se cadastrar?");
+                    const nome = prompt("Usuário não encontrado. Digite seu nome:");
+                    if (nome) {
+                        await fetch('http://localhost:5000/cadastrar_descriptor', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ descriptor, nome })
+                        })
+                            .then(res => res.json())
+                            .then(resposta => {
+                                speak(resposta.mensagem);
+                                document.getElementById('message').innerText = resposta.mensagem;
+                                setTimeout(() => reiniciarDeteccao(), 3000);
+                            });
+                    } else {
+                        speak("Cadastro cancelado.");
+                        document.getElementById('message').innerText = "Cadastro cancelado.";
+                    }
+                }
+
+                document.getElementById('preview').src = canvas.toDataURL('image/png');
+                document.getElementById('preview').style.display = 'block';
+
+            } catch (e) {
+                speak("Erro ao se comunicar com o servidor.");
+                console.error(e);
+                document.getElementById('message').innerText = "Erro ao se comunicar com o servidor.";
+            }
+        }
+
+        function reiniciarDeteccao() {
+            detectando = true;
+            jaCapturado = false;
+            lastSpokenMessage = "";
+            document.getElementById('preview').style.display = 'none';
+            detectFace();
+        }
+
+        async function start() {
+            await setupCamera();
+            await loadModels();
+            detectFace();
+        }
+
+        start();
+    </script>
+</body>
+</html>

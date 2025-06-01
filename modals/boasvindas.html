@@ -1,0 +1,64 @@
+<!-- Modal -->
+<div id="boasvindas" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h2>Bem-vindo à IDE!</h2>
+        <p>Qual é o seu nível de programação?</p>
+        <form id="programmingLevelForm">
+            <label>
+                <input type="radio" name="level" value="iniciante" required> Iniciante
+            </label><br>
+            <label>
+                <input type="radio" name="level" value="medio"> Médio
+            </label><br>
+            <label>
+                <input type="radio" name="level" value="dificil"> Difícil
+            </label><br><br>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        text-align: center;
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+
+<script>
+    function openModal() {
+        document.getElementById('boasvindas').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('boasvindas').style.display = 'none';
+    }
+
+    document.getElementById('programmingLevelForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const level = document.querySelector('input[name="level"]:checked').value;
+        alert(`Você selecionou: ${level}`);
+        closeModal();
+    });
+
+    window.onload = openModal;
+</script>

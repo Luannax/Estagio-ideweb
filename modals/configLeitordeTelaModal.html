@@ -1,0 +1,112 @@
+<!-- Modal de config do Leitor de tela -->
+<div class="modal fade" id="modalConfig" tabindex="-1" aria-labelledby="modalConfigLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content cor-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfigLabel" tabindex="1">Configurações do Leitor de Tela</h5>
+                <button type="button" class="btn-close btn-config-fechar" data-bs-dismiss="modal" aria-label="Fechar" tabindex="2"
+                    alt="Botão fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="form_config" name="form_config" class="form-horizontal">
+                        <!-- MENU GERAL -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="item form-group">
+                                    <label for="languageSelect" class="form-label" tabindex="6"
+                                        alt="Selecionar idioma">Selecionar o idioma</label>
+                                    <select class="form-select" id="languageSelect" name="languageSelect" tabindex="7"
+                                        alt="select com opções de idiomas">
+                                        <!--Pega do banco de dados para listar-->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col"> <!--MENU FALA-->
+                                <div class="item form-group">
+                                    <label for="voiceSelect" class="form-label" tabindex="9"
+                                        alt="Selecionar uma voz para o leitor de tela">Selecionar sintetizador de voz</label>
+                                    <select class="form-select" id="voiceSelect" tabindex="10" alt="select com opções de vozes">
+                                        <!--Pega do banco de dados para listar-->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col"></div>
+                            <label for="voiceSpeed" class="form-label" tabindex="11" alt="Selecione a velocidade da voz">Velocidade da voz</label>
+                            <input type="range" class="form-range" id="velocidade" min="0.5" max="2" step="0.1" value="1" tabindex="12"
+                                alt="use as setas do seu teclado para ajustar a velocidade da voz">
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <!-- Nível de programação -->
+                                <div class="mb-3">
+                                    <label for="nivel" class="form-label" tabindex="12" alt="Selecione o seu nível de programação">Qual é o seu nível de programação? (em desenvolvimento)</label>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="level" value="INICIANTE" required checked> Iniciante
+                                        </label><br>
+                                        <label>
+                                            <input type="radio" name="level" value="MEDIO"> Médio
+                                        </label><br>
+                                        <label>
+                                            <input type="radio" name="level" value="DIFICIL"> Difícil
+                                        </label>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <!-- Câmera -->
+                                <div class="mb-3">
+                                    <label for="cam" class="form-label" tabindex="12"
+                                        alt="Selecione a sua câmera">Câmera</label>
+                                    <select class="form-select" id="cam" tabindex="13"
+                                        alt="select com as opções de câmeras disponíveis">
+                                        <option value="0">em desenvolvimento ...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <!-- Áudio -->
+                                <div class="mb-3">
+                                    <label for="audio" class="form-label" tabindex="14"
+                                        alt="Selecione a seu áudio">Áudio</label>
+                                    <select class="form-select" id="audio" tabindex="15"
+                                        alt="select com as opções de áudios disponíveis">
+                                        <option value="0">em desenvolvimento ...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Braille 
+                        <h4 tabindex="20">
+                            Não foi implementado por falta de orçamento.
+                        </h4>-->
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-config-fechar" data-bs-dismiss="modal" tabindex="17"
+                                alt="Botão fechar">Fechar</button>
+                            <button type="submit" class="btn btn-primary" form="form_config" tabindex="16"
+                                alt="Botão aplicar"><i class="fas fa-save"></i>
+                                Aplicar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cor-modal {
+        background-color: #d6d6d6;
+    }
+</style>
+<script src="/js/leitor de tela/modalconfig.js"></script>
