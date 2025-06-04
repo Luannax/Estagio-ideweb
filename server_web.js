@@ -1,8 +1,9 @@
 //npm install express mysql bcrypt body-parser express-session crypto firebase-admin
-// Baixar xamp, sql e mysqlfront
+//Baixar xamp, sql e mysqlfront
 //https://www.mysql.com/downloads/
 //https://www.apachefriends.org/pt_br/download.html
 //https://mysql-front.softonic.com.br/
+//Observação para usar o server tem que instar o node.
 //Para rodar o servidor, use o comando: node server_web.js
 
 const express = require("express"); //FRAMEWORK WEB
