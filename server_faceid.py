@@ -1,6 +1,7 @@
-#pip install bcrypt
-#pip install mysql-connector-python
-#pip install flask-cors
+#pip install bcrypt |ou| python -m pip install bcrypt
+#pip install mysql-connector-python |ou| python -m pip install mysql-connector-python
+#pip install numpy |ou| python -m pip install numpy
+#pip install flask-cors |ou| python -m pip install flask-cors
 #para rodar o servidor, execute: python server_faceid.py
 
 import pickle
