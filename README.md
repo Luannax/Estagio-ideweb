@@ -1,5 +1,4 @@
-<h1>PARA RODAR O BANCO DE DADOS VEJA O VÍDEO: <a href="https://youtu.be/bfAuDoj08lg?si=C1MY6gyw23MIhdlK">Link</a></h1>
-<p>Se tiver dúvida sobre o banco de dados é só ver o vídeo novamente ou pesquisar alguém que ensina no youtube.</p>
+<h1>PARA RODAR O BANCO DE DADOS VEJA O VÍDEO: <a href="https://youtu.be/bfAuDoj08lg?si=C1MY6gyw23MIhdlK">Vídeo</a> ou Leia a documentação do desenvolvedor <a href="#">Documentação</a>a</h1>
 
 <h1>IDE Web com Web Speech</h1>
 Este projeto é uma IDE Web que suporta a leitura de código coma a API do leitor de tela Web Speech. A IDE permite que os usuários escrevam, compartilhem e salvem código em Python.
